@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserInfoActivity">
+    <TextView
+        android:id="@+id/tv_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="个人资料"
+        android:textSize="25dp"
+        android:gravity="center"
+        android:textColor="#000000"
+        android:background="@color/colorPrimary"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tv_info"
+        android:background="#55AA99">
+        <EditText
+            android:id="@+id/et_username"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="用户名"
+            android:background="@drawable/bg_username"/>
+        <EditText
+            android:id="@+id/et_nickname"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="用户名"
+            android:layout_below="@+id/et_username"
+            android:background="@drawable/bg_username"/>
+        <EditText
+            android:id="@+id/et_gender"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="用户名"
+            android:layout_below="@+id/et_nickname"
+            android:background="@drawable/bg_username"/>
+        <EditText
+            android:id="@+id/et_singnature"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="用户名"
+            android:layout_below="@+id/et_gender"
+            android:background="@drawable/bg_username"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

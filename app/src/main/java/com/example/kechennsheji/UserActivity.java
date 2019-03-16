@@ -11,42 +11,60 @@ public class UserActivity extends AppCompatActivity {
     private Button chakan;
     private Button fenxibaogao;
     private Button user;
+    private Button user_info;
+    private Button login_out;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
         jizhang=findViewById(R.id.btn_jizhang);
-        jizhang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(UserActivity.this,MainActivity.class);
-                startActivity(intent);
-            }
-        });
         chakan=findViewById(R.id.btn_chakanzhangdan);
-        chakan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(UserActivity.this,BillListActivity.class);
-                startActivity(intent);
-            }
-        });
         fenxibaogao=findViewById(R.id.btn_fenxibaogao);
-        fenxibaogao.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(UserActivity.this,AnalysisChartActivity.class);
-                startActivity(intent);
-            }
-        });
         user=findViewById(R.id.btn_yonghuzhongxin);
-        user.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(UserActivity.this,UserActivity.class);
-                startActivity(intent);
-            }
-        });
+        user_info=findViewById(R.id.bt_userinfo);
+        login_out=findViewById(R.id.bt_loginout);
+
+       setclicklinster();
+    }
+    public void setclicklinster()
+    {
+        onClick onclick=new onClick();
+        jizhang.setOnClickListener(onclick);
+        chakan.setOnClickListener(onclick);
+        fenxibaogao.setOnClickListener(onclick);
+        user.setOnClickListener(onclick);
+        user_info.setOnClickListener(onclick);
+        login_out.setOnClickListener(onclick);
 
     }
+     private class onClick implements View.OnClickListener{
+        public void onClick(View view)
+        {
+            Intent intent=null;
+            switch (view.getId())
+            {
+                case R.id.btn_jizhang:
+                    intent=new Intent(UserActivity.this,MainActivity.class);
+                    break;
+                case R.id.btn_chakanzhangdan:
+                    intent=new Intent(UserActivity.this,BillListActivity.class);
+                    break;
+                case R.id.btn_fenxibaogao:
+                    intent=new Intent(UserActivity.this,AnalysisChartActivity.class);
+                    break;
+                case R.id.btn_yonghuzhongxin:
+                    intent=new Intent(UserActivity.this,UserActivity.class);
+                    break;
+                case R.id.bt_userinfo:
+                    intent=new Intent(UserActivity.this,UserInfoActivity.class);
+                    break;
+                case R.id.bt_loginout:
+                    intent=new Intent(UserActivity.this,LogInActivity.class);
+                    break;
+            }
+            startActivity(intent);
+
+        }
+
+     }
 }

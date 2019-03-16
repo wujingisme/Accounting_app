@@ -9,17 +9,33 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LogInActivity">
+        <activity
+            android:name=".LogInActivity"
+            android:label="用户登录">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".BillListActivity" />
-        <activity android:name=".AnalysisChartActivity" />
-        <activity android:name=".UserActivity"></activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="日常记账" />
+        <activity
+            android:name=".BillListActivity"
+            android:label="查看账单" />
+        <activity
+            android:name=".AnalysisChartActivity"
+            android:label="分析报告" />
+        <activity
+            android:name=".UserActivity"
+            android:label="用户中心" />
+        <activity
+            android:name=".RegisterActivity"
+            android:label="新用户注册" />
+        <activity
+            android:name=".UserInfoActivity"
+            android:label="信息" />
     </application>
 
 </manifest>

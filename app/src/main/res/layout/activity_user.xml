@@ -7,6 +7,27 @@
     android:id="@+id/Rt1"
     android:background="#55AA99"
     tools:context=".UserActivity">
+    <Button
+        android:id="@+id/bt_changepw"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="修改密码"
+        android:background="@drawable/bg_username"/>
+    <Button
+        android:id="@+id/bt_userinfo"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="用户资料"
+        android:layout_below="@+id/bt_changepw"
+        android:background="@drawable/bg_username"/>
+    <Button
+        android:id="@+id/bt_loginout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="退出登录"
+        android:layout_below="@+id/bt_userinfo"
+        android:background="@drawable/bg_username"/>
+
     <RadioGroup
         android:id="@+id/Rl_buttom"
         android:layout_width="match_parent"
@@ -14,6 +35,7 @@
         android:background="#ffffff"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
+
         <RadioButton
             android:id="@+id/btn_jizhang"
             android:layout_width="70dp"
