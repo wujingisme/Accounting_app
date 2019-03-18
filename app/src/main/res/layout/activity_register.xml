@@ -13,7 +13,7 @@
         android:textSize="16sp"
         android:drawableLeft="@drawable/username"
         android:drawablePadding="15dp"
-        android:hint="用户名"
+        android:hint="手机号码"
         android:inputType="number"
         android:textColor="#0000ee"
         android:paddingLeft="15dp"

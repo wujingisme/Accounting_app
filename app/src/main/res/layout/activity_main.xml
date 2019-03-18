@@ -121,7 +121,7 @@
             android:layout_width="70dp"
             android:layout_height="35dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="26dp"
+            android:layout_marginLeft="18dp"
             android:text="记账"
             android:textSize="10dp"
             android:gravity="center"
