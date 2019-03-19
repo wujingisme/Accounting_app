@@ -1,7 +1,9 @@
-package com.example.kechennsheji;
+package com.example.kechennsheji.User;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.kechennsheji.R;
 
 public class UserInfoActivity extends AppCompatActivity {
 

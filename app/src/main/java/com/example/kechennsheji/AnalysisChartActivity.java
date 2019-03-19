@@ -10,6 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+//import package com.example.kechennsheji.User;
+
+import com.example.kechennsheji.User.UserActivity;
 
 import java.util.Calendar;
 
@@ -52,7 +55,7 @@ public class AnalysisChartActivity extends AppCompatActivity {
         user.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AnalysisChartActivity.this, UserActivity.class);
+                Intent intent = new Intent(AnalysisChartActivity.this,UserActivity.class);
                 startActivity(intent);
             }
         });

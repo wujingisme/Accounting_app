@@ -83,22 +83,33 @@ public class RegisterActivity extends AppCompatActivity {
             Matcher m= pattern.matcher(mobiles);
             return m.matches();
         }
-        private void saveRegisterInfo(String username,String psw)
-        {
+      public void saveRegisterInfo(String username,String psw)
+      {
             String MD5Psw=MD5Utils.MD5(psw);
-            SharedPreferences sp=getSharedPreferences("LoginInfo",MODE_PRIVATE);
-            SharedPreferences.Editor editor=sp.edit();
-            editor.putString(userName,MD5Psw);
-            editor.commit();
+           SharedPreferences sp=getSharedPreferences("LoginInfo",MODE_PRIVATE);
+           SharedPreferences.Editor editor=sp.edit();
+           editor.putString(userName,MD5Psw);
+           editor.clear();
+           editor.commit();
 
-        }
-        private  void getEditString()
+      }
+/*public void saveRegisterInfo(String username,String psw)
+{
+           SharedPreferences sp=getSharedPreferences("LoginInfo",MODE_PRIVATE);
+           SharedPreferences.Editor editor=sp.edit();
+           editor.putString(userName,psw);
+          // editor.clear();
+           editor.commit();
+}
+*/
+
+       public void getEditString()
         {
            userName =mEt_username.getText().toString().trim();
            psw=mEt_password.getText().toString().trim();
            pswagain=mEt_password_again.getText().toString().trim();
         }
-        private Boolean isExistUsername(String username)
+       public Boolean isExistUsername(String username)
 
         {
             boolean ha_userName=false;

@@ -6,27 +6,43 @@
     android:orientation="vertical"
     android:id="@+id/Rt1"
     android:background="#55AA99"
-    tools:context=".UserActivity">
-    <Button
-        android:id="@+id/bt_changepw"
+    tools:context=".User.UserActivity">
+    <RelativeLayout
+        android:id="@+id/RL_1"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="修改密码"
-        android:background="@drawable/bg_username"/>
-    <Button
-        android:id="@+id/bt_userinfo"
+        android:layout_height="250dp"
+        android:background="#00ffff">
+        <ImageView
+            android:id="@+id/user_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/user_settings" />
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_below="@id/user_icon"
+            android:layout_marginTop="10dp"
+            android:textColor="#000000"
+            android:layout_marginLeft="160dp"/>
+    </RelativeLayout>
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="用户资料"
-        android:layout_below="@+id/bt_changepw"
-        android:background="@drawable/bg_username"/>
-    <Button
-        android:id="@+id/bt_loginout"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="退出登录"
-        android:layout_below="@+id/bt_userinfo"
-        android:background="@drawable/bg_username"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/RL_1">
+        <Button
+            android:id="@+id/setting"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="设置用户信息"
+            android:gravity="center">
+        </Button>
+
+
+    </RelativeLayout>
+
 
     <RadioGroup
         android:id="@+id/Rl_buttom"
@@ -46,6 +62,7 @@
             android:textSize="10dp"
             android:button="@null"
             android:background="@drawable/bg_radio_buttom"
+            android:gravity="center"
             />
         <RadioButton
             android:id="@+id/btn_chakanzhangdan"
@@ -57,11 +74,13 @@
             android:textSize="10dp"
             android:layout_alignLeft="@id/btn_jizhang"
             android:button="@null"
-            android:background="@drawable/bg_radio_buttom"/>
+            android:background="@drawable/bg_radio_buttom"
+            android:gravity="center"/>
         <RadioButton
             android:id="@+id/btn_fenxibaogao"
             android:layout_width="70dp"
             android:layout_height="35dp"
+            android:gravity="center"
             android:text="分析报告"
             android:textSize="10dp"
             android:layout_alignParentBottom="true"
@@ -81,5 +100,4 @@
             android:button="@null"
             android:background="@drawable/bg_radio_buttom"/>
     </RadioGroup>
-
 </RelativeLayout>

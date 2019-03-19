@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/Rt1"
+    android:background="#55AA99"
+    tools:context=".User.SettingActivity">
+    <Button
+        android:id="@+id/bt_changepw"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="修改密码"
+        android:background="@drawable/bg_username"/>
+    <Button
+        android:id="@+id/bt_userinfo"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="用户资料"
+        android:layout_below="@+id/bt_changepw"
+        android:background="@drawable/bg_username"/>
+    <Button
+        android:id="@+id/bt_loginout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="退出登录"
+        android:layout_below="@+id/bt_userinfo"
+        android:background="@drawable/bg_username"/>
+
+</RelativeLayout>
