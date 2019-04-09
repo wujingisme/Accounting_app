@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainPayoutActivity"
+    tools:context=".MainPayinActivity"
     android:orientation="vertical"
     android:id="@+id/Rt1"
     android:background="#55AA99">
@@ -73,7 +73,7 @@
         android:layout_height="55dp"
         android:textSize="20dp"
         android:textColor="#000000"
-        android:hint="花费类别"
+        android:hint="收入类别"
         android:drawableLeft="@drawable/icon_date"
         android:drawablePadding="10dp"
         android:paddingLeft="10dp"
@@ -81,7 +81,7 @@
         android:background="@drawable/bg_username"
         android:layout_below="@id/et_22"
         android:focusable="false"
-      >
+        >
     </EditText>
     <Button
         android:id="@+id/manager_sort"

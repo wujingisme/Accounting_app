@@ -43,7 +43,61 @@
         </EditText>
 
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/L2_bill"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/Ll_date1">
+        <TextView
+            android:id="@+id/_shouzhi"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="20dp"
+            android:text="金额"
+            android:gravity="center"
+            android:textColor="#ffff"/>
+        <TextView
+            android:id="@+id/_sort"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="20dp"
+            android:text="类别"
+            android:gravity="center"
+            android:textColor="#ffff"/>
+        <TextView
+            android:id="@+id/_jiner"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="20dp"
+            android:text="日期"
+            android:gravity="center"
+            android:textColor="#ffff"/>
+        <TextView
+            android:id="@+id/_riqi"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="20dp"
+            android:text="备注"
+            android:gravity="center"
+            android:textColor="#ffff"/>
+        <Button
+            android:id="@+id/zhichuorsouru"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="20dp"
+            android:text="收入"
+            android:gravity="center"
+            android:textColor="#ffff"
+            android:background="@drawable/bg_login"/>
 
+    </LinearLayout>
+ <ListView
+     android:layout_below="@id/L2_bill"
+     android:id="@+id/List_1"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent">
+
+ </ListView>
 
     <RadioGroup
         android:id="@+id/Rl_buttom"

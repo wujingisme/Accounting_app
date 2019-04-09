@@ -4,24 +4,20 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Paint;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.app.DatePickerDialog;
-import android.widget.DatePicker;
-import java.util.Calendar;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LogInActivity extends AppCompatActivity {
-private Button mBtnLogin;
+    private Button mBtnLogin;
     private EditText mEt_username;
     private EditText mEt_password;
     private TextView mTextView;
@@ -40,7 +36,7 @@ private Button mBtnLogin;
         mEt_username=findViewById(R.id.et_1);
         mEt_password=findViewById(R.id.et_2);
         mTextView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
-     mTextView.setOnClickListener(new View.OnClickListener() {
+        mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(LogInActivity.this,RegisterActivity.class);
@@ -54,7 +50,10 @@ private Button mBtnLogin;
                 psw=mEt_password.getText().toString().trim();
                 String MD5psw=MD5Utils.MD5(psw);
                 spPsw=readPsw(userName);
-                if(isMobileNum(userName))
+
+
+                startActivity(new Intent(LogInActivity.this,MainPayoutActivity.class));
+            /*    if(isMobileNum(userName))
                 {
                     if (TextUtils.isEmpty(userName)) {
                         Toast.makeText(LogInActivity.this, "请输入手机号", Toast.LENGTH_SHORT).show();
@@ -70,12 +69,8 @@ private Button mBtnLogin;
                         data.putExtra("isLogin",true);
                         setResult(RESULT_OK,data);
 
-                        /*saveLoginStatu(true,userName);
-                        Intent data =new Intent();
-                        data.putExtra("isLogin",true);
-                        setResult(RESULT_OK,data);*/
 
-                        startActivity(new Intent(LogInActivity.this,MainActivity.class));
+                        startActivity(new Intent(LogInActivity.this,MainPayoutActivity.class));
                         LogInActivity.this.finish();
                         return;
                     } else if ((spPsw!=null&&!TextUtils.isEmpty(spPsw)&&!MD5psw.equals(spPsw)))
@@ -89,12 +84,12 @@ private Button mBtnLogin;
                     }else
                         {
                             Toast.makeText(LogInActivity.this,"您输入的手机号有误！",Toast.LENGTH_SHORT).show();
-                        }
+                        }*/
             }
         });
 
     }
-    private  void saveLoginStatu(boolean status,String username)
+   private  void saveLoginStatu(boolean status,String username)
             //保存登陆信息到用户界面
     {
         SharedPreferences sp = getSharedPreferences("LoginInfo", MODE_PRIVATE);
@@ -103,6 +98,7 @@ private Button mBtnLogin;
         editor.putBoolean("isLogin", status);
         editor.putString("loginUserName", userName);//存入登陆状态时的用户名；
         editor.commit();//提交修改
+       // editor.clear();
     }
 
 

@@ -31,7 +31,7 @@ public class AnalysisChartActivity extends AppCompatActivity {
         jizhang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AnalysisChartActivity.this, MainActivity.class);
+                Intent intent = new Intent(AnalysisChartActivity.this, MainPayoutActivity.class);
                 startActivity(intent);
             }
         });

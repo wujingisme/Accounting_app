@@ -3,7 +3,6 @@ package com.example.kechennsheji.User;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,8 +11,7 @@ import android.widget.TextView;
 
 import com.example.kechennsheji.AnalysisChartActivity;
 import com.example.kechennsheji.BillListActivity;
-import com.example.kechennsheji.LogInActivity;
-import com.example.kechennsheji.MainActivity;
+import com.example.kechennsheji.MainPayoutActivity;
 import com.example.kechennsheji.R;
 
 public class UserActivity extends AppCompatActivity {
@@ -62,7 +60,7 @@ public class UserActivity extends AppCompatActivity {
             switch (view.getId())
             {
                 case R.id.btn_jizhang:
-                    intent=new Intent(UserActivity.this,MainActivity.class);
+                    intent=new Intent(UserActivity.this,MainPayoutActivity.class);
                     break;
                 case R.id.btn_chakanzhangdan:
                     intent=new Intent(UserActivity.this,BillListActivity.class);

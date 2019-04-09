@@ -21,8 +21,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:label="日常记账" />
+            android:name=".MainPayoutActivity"
+            android:label="日常支出" />
         <activity
             android:name=".BillListActivity"
             android:label="查看账单" />
@@ -38,7 +38,16 @@
         <activity
             android:name=".User.UserInfoActivity"
             android:label="信息" />
-        <activity android:name=".User.SettingActivity"></activity>
+        <activity
+            android:name=".User.SettingActivity"
+            android:label="设置" />
+        <activity
+            android:name=".MgPayoutsortActivity"
+            android:label="选择类别" />
+        <activity
+            android:name=".MainPayinActivity"
+            android:label="收入来源" />
+        <activity android:name=".MgPayinsortActivity"></activity>
     </application>
 
 </manifest>

@@ -89,19 +89,10 @@ public class RegisterActivity extends AppCompatActivity {
            SharedPreferences sp=getSharedPreferences("LoginInfo",MODE_PRIVATE);
            SharedPreferences.Editor editor=sp.edit();
            editor.putString(userName,MD5Psw);
-           editor.clear();
+           //editor.clear();
            editor.commit();
 
       }
-/*public void saveRegisterInfo(String username,String psw)
-{
-           SharedPreferences sp=getSharedPreferences("LoginInfo",MODE_PRIVATE);
-           SharedPreferences.Editor editor=sp.edit();
-           editor.putString(userName,psw);
-          // editor.clear();
-           editor.commit();
-}
-*/
 
        public void getEditString()
         {
