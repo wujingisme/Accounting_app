@@ -61,6 +61,7 @@
         android:padding="8dp"
         android:orientation="horizontal">
         <RadioButton
+            android:id="@+id/bt_huafei"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/bg_zhichu_button"
@@ -70,15 +71,198 @@
             android:textColor="#ffffff"
             android:button="@null"/>
         <RadioButton
+            android:id="@+id/bt_shouru"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/bg_zhichu_button"
             android:layout_weight="1"
-            android:text="支出"
+            android:text="收入"
             android:gravity="center"
             android:textColor="#ffffff"
             android:button="@null"/>
     </RadioGroup>
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pie_chart"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_below="@+id/Rg_1"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp" />
+    <RelativeLayout
+        android:id="@+id/R1"
+        android:layout_above="@id/R2"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/colorPrimaryDark">
+        <TextView
+            android:id="@+id/total_jiaotong"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:text="交通支出"
+            android:textSize="12dp"
+            android:gravity="center"
+            android:textColor="#ffff"/>
+        <TextView
+            android:id="@+id/total_jiaotong2"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="60dp"
+            android:hint="(元）"
+            android:textSize="12dp"
+            android:gravity="center"
+            android:textColor="#ffff"/>
+        <TextView
+            android:id="@+id/total_zhufang"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="130dp"
+            android:text="住房支出"
+            android:textSize="12dp"
+            android:gravity="center"
+            android:textColor="#ffff"/>
+        <TextView
+            android:id="@+id/total_zhufang2"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="180dp"
+            android:hint="(元）"
+            android:textSize="12dp"
+            android:gravity="center"
+            android:textColor="#ffff"/>
+        <TextView
+            android:id="@+id/total_yiliao"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="240dp"
+            android:text="医疗支出"
+            android:gravity="center"
+            android:textSize="12dp"
+            android:textColor="#ffff"/>
+        <TextView
+            android:id="@+id/total_yiliao2"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="300dp"
+            android:hint="(元)"
+            android:textSize="12dp"
+            android:gravity="center"
+            android:textColor="#ffff"/>
+
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/R2"
+        android:layout_above="@id/R3"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/colorPrimaryDark">
+        <TextView
+            android:id="@+id/total_yule"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:text="娱乐支出"
+            android:textSize="12dp"
+            android:gravity="center"
+            android:textColor="#ffff"/>
+        <TextView
+            android:id="@+id/total_yule2"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="60dp"
+            android:hint="(元）"
+            android:textSize="12dp"
+            android:gravity="center"
+            android:textColor="#ffff"/>
+        <TextView
+            android:id="@+id/total_jiaoyu"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="130dp"
+            android:text="教育支出"
+            android:textSize="12dp"
+            android:gravity="center"
+            android:textColor="#ffff"/>
+        <TextView
+            android:id="@+id/total_jiaoyu2"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="180dp"
+            android:hint="(元）"
+            android:textSize="12dp"
+            android:gravity="center"
+            android:textColor="#ffff"/>
+
+        <TextView
+            android:id="@+id/total_qita"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="240dp"
+            android:text="其他支出"
+            android:gravity="center"
+            android:textSize="12dp"
+            android:textColor="#ffff"/>
+        <TextView
+            android:id="@+id/total_qita2"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="300dp"
+            android:hint="(元)"
+            android:textSize="12dp"
+            android:gravity="center"
+            android:textColor="#ffff"/>
+
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/R3"
+        android:layout_above="@id/Rl_buttom"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/colorPrimaryDark">
+
+        <TextView
+            android:id="@+id/total_shenghuo"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:text="生活用品支出"
+            android:textSize="12dp"
+            android:gravity="center"
+            android:textColor="#ffff"/>
+        <TextView
+            android:id="@+id/total_shenghuo2"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="80dp"
+            android:hint="(元）"
+            android:textSize="12dp"
+            android:gravity="center"
+            android:textColor="#ffff"/>
+        <TextView
+            android:id="@+id/total_expense"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="180dp"
+            android:hint="总支出"
+            android:textSize="12dp"
+            android:gravity="center"
+            android:background="#FFE4E1"
+            android:textColor="#ffff"/>
+        <TextView
+            android:id="@+id/total_expense2"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="240dp"
+            android:hint="(元）"
+            android:textSize="12dp"
+            android:gravity="center"
+            android:textColor="#ffff"/>
+
+
+    </RelativeLayout>
+
     <RadioGroup
         android:id="@+id/Rl_buttom"
         android:layout_width="match_parent"
@@ -137,3 +321,5 @@
     </RadioGroup>
 
 </RelativeLayout>
+
+
