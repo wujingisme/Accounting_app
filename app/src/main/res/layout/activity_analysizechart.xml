@@ -20,12 +20,13 @@
             android:text="时间"
             android:textColor="#ffffff"
             android:gravity=""/>
-        <EditText
+        <TextView
             android:id="@+id/Et_date1"
             android:layout_width="90dp"
             android:layout_height="40dp"
             android:text=""
-            android:hint=""
+            android:hint="开始"
+            android:gravity="center"
             android:textColor="#ffffff"/>
         <TextView
             android:layout_width="12dp"
@@ -34,10 +35,12 @@
             android:paddingBottom="5dp"
             android:textColor="#ffffff"
             android:gravity=""/>
-        <EditText
+        <TextView
             android:id="@+id/Et_date2"
             android:layout_width="90dp"
             android:layout_height="40dp"
+            android:hint="结束"
+            android:gravity="center"
             android:textColor="#ffffff"/>
         />
         <Button

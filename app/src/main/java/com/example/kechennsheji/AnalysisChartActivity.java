@@ -40,7 +40,7 @@ public class AnalysisChartActivity extends AppCompatActivity {
     private Button jizhang,chakan,user,fenxibaogao;
     private Button bt_shouru,bt_huafei;
 
-    private EditText editText1, editText2;
+    private TextView date1, date2;
     private TextView tv_expense,tv_jiaotong,tv_zhufang,tv_yilioa,tv_yule,tv_shenghuoyongp,tv_jiaoyu,tv_qita;
     private PieChart mChart;
     private final String TAG="Piechart";
@@ -59,10 +59,7 @@ public class AnalysisChartActivity extends AppCompatActivity {
             // 以7个对应数据集做测试
             QTotal_expense();
             initview();
-           /* Log.d(TAG,String.valueOf(m_jiaotong));
-            Log.d(TAG,String.valueOf(m_jiaotong2));
-            Log.d(TAG,String.valueOf(m_jiaotong+m_zhufang+m_yiliao+m_yule+m_jiaoyu+m_shenghuoyongping+m_qita));
-            Log.d(TAG,String.valueOf((float)m_jiaotong/(m_jiaotong+m_zhufang+m_yiliao+m_yule+m_jiaoyu+m_shenghuoyongping+m_qita)));*/
+            setclicklinster();
          total=m_jiaotong+m_zhufang+m_yiliao+m_yule+m_jiaoyu+m_shenghuoyongping+m_qita;
         m_jiaotong=((float)m_jiaotong/total)*100;
         m_zhufang=((float)m_zhufang/total)*100;
@@ -74,9 +71,20 @@ public class AnalysisChartActivity extends AppCompatActivity {
 
             y = new float[]{m_jiaotong,m_zhufang,m_yiliao,m_yule,m_jiaoyu,m_shenghuoyongping,m_qita};
             setData(x.length);
-
+            date1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showDatePickDlg();
+                }
+            });
+            date2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showDatePickDlg1();
+                }
+            });
         }
-        DecimalFormat df=new DecimalFormat("0.00");
+    //    DecimalFormat df=new DecimalFormat("0.00");
     public void QTotal_expense()
     {
         helper_out=new DatabaseHelper(AnalysisChartActivity.this,"table_payout",null,1);
@@ -147,6 +155,14 @@ public class AnalysisChartActivity extends AppCompatActivity {
     }
     public void initview()
     {
+        bt_shouru=findViewById(R.id.bt_shouru);
+        user = findViewById(R.id.btn_yonghuzhongxin);
+        fenxibaogao = findViewById(R.id.btn_fenxibaogao);
+        jizhang = findViewById(R.id.btn_jizhang);
+        chakan=findViewById(R.id.btn_chakanzhangdan);
+
+       date1 = findViewById(R.id.Et_date1);
+       date2 = findViewById(R.id.Et_date2);
         tv_expense=findViewById(R.id.total_expense2);
         tv_jiaotong=findViewById(R.id.total_jiaotong2);
         tv_jiaoyu=findViewById(R.id.total_jiaoyu2);
@@ -198,95 +214,48 @@ public class AnalysisChartActivity extends AppCompatActivity {
             mChart.setData(data);
             mChart.invalidate();
 
-        jizhang = findViewById(R.id.btn_jizhang);
-        jizhang.setOnClickListener(new View.OnClickListener() {
+   /*     date1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AnalysisChartActivity.this, MainPayoutActivity.class);
-                startActivity(intent);
-            }
-        });
-        chakan = findViewById(R.id.btn_chakanzhangdan);
-        chakan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AnalysisChartActivity.this, BillListActivity.class);
-                startActivity(intent);
-            }
-        });
-        fenxibaogao = findViewById(R.id.btn_fenxibaogao);
-        fenxibaogao.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AnalysisChartActivity.this, AnalysisChartActivity.class);
-                startActivity(intent);
-            }
-        });
-        user = findViewById(R.id.btn_yonghuzhongxin);
-        user.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AnalysisChartActivity.this,UserActivity.class);
-                startActivity(intent);
-            }
-        });
-        bt_shouru=findViewById(R.id.bt_shouru);
-        bt_shouru.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(AnalysisChartActivity.this,AnalysisIncomeActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
-      /*  //调出日历
-        editText1 = findViewById(R.id.Et_date1);
-        editText2 = findViewById(R.id.Et_date2);
-        editText1.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    showDatePickDlg();
-                    return true;
-                }
-                return false;
-            }
-        });
-        editText2.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    showDatePickDlg1();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-
-        editText1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    showDatePickDlg();
-                }
-            }
-        });
-        editText2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    showDatePickDlg1();
-                }
+                showDatePickDlg();
             }
         });*/
-    }
 
+    }
+    public void setclicklinster() {
+       onClick onclick = new onClick();
+        chakan.setOnClickListener(onclick);
+        fenxibaogao.setOnClickListener(onclick);
+        user.setOnClickListener(onclick);
+        jizhang.setOnClickListener(onclick);
+        bt_shouru.setOnClickListener(onclick);
+
+    }
+    private class onClick implements View.OnClickListener {
+
+        public void onClick(View v) {
+            Intent intent=null;
+            switch (v.getId())
+            {
+                case R.id.btn_yonghuzhongxin:
+                    intent=new Intent(AnalysisChartActivity.this,UserActivity.class);
+                    break;
+                case R.id.btn_chakanzhangdan:
+                    intent=new Intent(AnalysisChartActivity.this,BillListActivity.class);
+                    break;
+                case R.id.btn_fenxibaogao:
+                    intent=new Intent(AnalysisChartActivity.this,AnalysisChartActivity.class);
+                    break;
+                case R.id.btn_jizhang:
+                    intent=new Intent(AnalysisChartActivity.this,MainPayoutActivity.class);
+                    break;
+                case R.id.bt_shouru:
+                    intent=new Intent(AnalysisChartActivity.this,AnalysisIncomeActivity.class);
+                    break;
+            }
+            startActivity(intent);
+        }
+    }
     @SuppressLint("ClickableViewAccessibility")
     protected void showDatePickDlg() {
         Calendar calendar = Calendar.getInstance();
@@ -294,7 +263,7 @@ public class AnalysisChartActivity extends AppCompatActivity {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                AnalysisChartActivity.this.editText1.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
+                AnalysisChartActivity.this.date1.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
@@ -306,7 +275,7 @@ public class AnalysisChartActivity extends AppCompatActivity {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                AnalysisChartActivity.this.editText2.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
+                AnalysisChartActivity.this.date2.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog1.show();

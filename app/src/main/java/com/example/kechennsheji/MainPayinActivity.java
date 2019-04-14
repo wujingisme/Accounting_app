@@ -13,11 +13,14 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import com.example.kechennsheji.SQLite.DatabaseHelper;
 import com.example.kechennsheji.SQLite.DatabaseHelperPayin;
 import com.example.kechennsheji.SQLite.Pay;
 import com.example.kechennsheji.User.UserActivity;
+
+import org.w3c.dom.Text;
 
 import java.util.*;
 
@@ -28,7 +31,8 @@ public class MainPayinActivity extends AppCompatActivity{
     private Button chakan,fenxibaogao,user,mBtnManagerSort;
     private Button mBtn_confin;
     private String m_sort;
-    private EditText mEt_Money,mEt_calander,mEt_Sort,mEt_Introduce;
+    private EditText mEt_Money,mEt_Sort,mEt_Introduce;
+    private TextView mEt_calander;
     private RadioButton Rd_payin,Rd_payout;
     private final static String TAG="insert";
     @Override
@@ -62,27 +66,13 @@ public class MainPayinActivity extends AppCompatActivity{
         //调出分类
         m_sort=getIntent().getStringExtra("name");
         mEt_Sort.setText(m_sort);
-
-
-      /*  //调出日历
-        mEt_calander.setOnTouchListener(new View.OnTouchListener() {
+        mEt_calander.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    showDatePickDlg();
-                    return true;
-                }
-                return false;
+            public void onClick(View v) {
+                showDatePickDlg();
             }
         });
-        mEt_calander.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    showDatePickDlg();
-                }
-            }
-        });*/
+
     }
 
 
@@ -146,7 +136,7 @@ public class MainPayinActivity extends AppCompatActivity{
 
     }
 
-    /*protected void showDatePickDlg() {
+    protected void showDatePickDlg() {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(MainPayinActivity.this, new DatePickerDialog.OnDateSetListener() {
 
@@ -158,7 +148,7 @@ public class MainPayinActivity extends AppCompatActivity{
         datePickerDialog.show();
 
 
-    }*/
+    }
 
 
 

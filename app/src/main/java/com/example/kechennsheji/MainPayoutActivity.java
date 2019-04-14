@@ -1,5 +1,6 @@
 package com.example.kechennsheji;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import com.example.kechennsheji.SQLite.DatabaseHelper;
 import com.example.kechennsheji.SQLite.Pay;
@@ -27,7 +29,8 @@ public class MainPayoutActivity extends AppCompatActivity{
 private Button chakan,fenxibaogao,user,mBtnManagerSort;
 private Button mBtn_confin;
 private String m_sort;
-private EditText mEt_Money,mEt_calander,mEt_Sort,mEt_Introduce;
+private EditText mEt_Money,mEt_Sort,mEt_Introduce;
+private TextView mEt_calander;
 private RadioButton Rd_payin,Rd_payout;
 private final static String TAG="insert";
     @Override
@@ -43,11 +46,14 @@ private final static String TAG="insert";
         mBtn_confin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
+
+
                 int S_money= Integer.parseInt(mEt_Money.getText().toString());
                 String S_calander=mEt_calander.getText().toString();
                 String S_sort=mEt_Sort.getText().toString();
                 String S_introduce=mEt_Introduce.getText().toString();
                 ContentValues contentValues=new ContentValues();
+
                 contentValues.put("money",S_money);
                 contentValues.put("sort",S_sort);
                 contentValues.put("datetime",S_calander);
@@ -58,30 +64,15 @@ private final static String TAG="insert";
 
             }
         });
-        //调出分类
-        m_sort=getIntent().getStringExtra("name");
-        mEt_Sort.setText(m_sort);
-
-/*
-        //调出日历
-        mEt_calander.setOnTouchListener(new View.OnTouchListener() {
+        mEt_calander.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    showDatePickDlg();
-                    return true;
-                }
-                return false;
+            public void onClick(View v) {
+                showDatePickDlg();
             }
         });
-        mEt_calander.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    showDatePickDlg();
-                }
-            }
-        });*/
+       //调出分类
+        m_sort=getIntent().getStringExtra("name");
+        mEt_Sort.setText(m_sort);
 
     }
 
@@ -99,6 +90,7 @@ private final static String TAG="insert";
         mBtnManagerSort.setOnClickListener(onclick);
 
 }
+   @SuppressLint("WrongViewCast")
    public void initView()
    {
        chakan=findViewById(R.id.btn_chakanzhangdan);
@@ -146,7 +138,7 @@ private final static String TAG="insert";
 
     }
 
-  /*  protected void showDatePickDlg() {
+  protected void showDatePickDlg() {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(MainPayoutActivity.this, new DatePickerDialog.OnDateSetListener() {
 
@@ -159,7 +151,5 @@ private final static String TAG="insert";
 
 
     }
-*/
-
 
 }
