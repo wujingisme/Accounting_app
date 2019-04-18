@@ -38,6 +38,9 @@
             android:textColor="#ffffff"
             android:button="@null"/>
     </RadioGroup>
+
+
+
     <EditText
         android:id="@+id/et_11"
         android:layout_width="match_parent"
@@ -84,6 +87,12 @@
         android:focusable="false"
       >
     </EditText>
+
+
+
+
+
+
     <Button
         android:id="@+id/manager_sort"
         android:layout_width="70dp"

@@ -2,6 +2,7 @@
 
         import android.app.AlertDialog;
         import android.app.DatePickerDialog;
+        import android.content.ContentValues;
         import android.content.DialogInterface;
         import android.content.Intent;
         import android.database.Cursor;
@@ -36,7 +37,7 @@ public class BillListActivity extends AppCompatActivity {
     private DatabaseHelperPayin helper;
     private DatabaseHelper helper_out;
     private Button jizhang,chakan,fenxibaogao,user;
-    private Button zhichu_shouru;
+    private Button zhichu_shouru,msearch;
     private TextView date1, date2;
     private ListView ls;
     private Boolean flag=true;
@@ -48,7 +49,9 @@ public class BillListActivity extends AppCompatActivity {
     private List<Map<String,Object>>datalist=new ArrayList<Map<String,Object>>();
     private int[] itemIdArr=new int[]{R.id.tv_shouzhi,id.tv_sort,id.tv_jiner,id.tv_riqi};
     private String[]   dataKeyArr=new String[]{"money","datetime","sort","introduce"};
+    SQLiteDatabase db;
     SimpleAdapter simpleAdapter;
+    //SimpleCursorAdapter mSimpleCursorAdapter ;
 
 
     @Override
@@ -57,25 +60,28 @@ public class BillListActivity extends AppCompatActivity {
         setContentView(layout.activity_billlist);
         initview();
         setclicklinster();
+        helper=new DatabaseHelperPayin(BillListActivity.this,"table_payin",null,1);
+        db=helper.getReadableDatabase();
+        ls=findViewById(R.id.List_1);
+
+        simpleAdapter=new SimpleAdapter(BillListActivity.this,datalist,R.layout.item_list,dataKeyArr,itemIdArr);
+        ls.setAdapter(simpleAdapter);
+
         QTotal_expense();
         QTotal_income();
         QTotal_left();
+
         zhichu_shouru.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if(flag==true)
-                {       datalist.clear();
+                {
+                    datalist.clear();
                     helper=new DatabaseHelperPayin(BillListActivity.this,"table_payin",null,1);
                     SQLiteDatabase db=helper.getReadableDatabase();
+                    db.delete("table_payin","money=?",new String[]{""});
                     ls=findViewById(R.id.List_1);
-              /*     SimpleCursorAdapter mSimpleCursorAdapter ;
-                    mSimpleCursorAdapter = new SimpleCursorAdapter(BillListActivity.this,R.layout.item_list, null,
-                            dataKeyArr,itemIdArr,CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
-
-                    ls.setAdapter(mSimpleCursorAdapter);     //给ListView设置适配器
-                    Cursor mcursor = db.query("table_payin", null, null, null, null,null, null); //用于当数据列表改变时刷新ListView
-                    mSimpleCursorAdapter.changeCursor(mcursor);*/
-
                     final Cursor cursor;
                     cursor = db.query("table_payin", null, null, null, null,null, null);
                     while (cursor.moveToNext()) {
@@ -86,36 +92,50 @@ public class BillListActivity extends AppCompatActivity {
 
                      simpleAdapter=new SimpleAdapter(BillListActivity.this,datalist,R.layout.item_list,dataKeyArr,itemIdArr);
                        ls.setAdapter(simpleAdapter);
-                        Map<String,Object> map;
+                        final Map<String,Object> map;
                         map=new HashMap<String,Object>();
                         map.put("money",money);
                         map.put("datetime",datetime);
                         map.put("sort",sort);
                         map.put("introduce",introduce);
                         datalist.add(map);
+
                     }
                     ls.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                         @Override
                         public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                             final int location=position;
-
+                            simpleAdapter=new SimpleAdapter(BillListActivity.this,datalist,R.layout.item_list,dataKeyArr,itemIdArr);
+                            ls.setAdapter(simpleAdapter);
                             new AlertDialog.Builder(BillListActivity.this)
-                         .setTitle("警告")
+                                    .setTitle("警告")
                                     .setMessage("你想删除这条数据吗")
                                     .setPositiveButton("是", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            Log.d(TAG,"aaaa");
-
+                                            helper=new DatabaseHelperPayin(BillListActivity.this,"table_payin",null,1);
                                             SQLiteDatabase db=helper.getReadableDatabase();
-                                           // db.delete("table_payin","money=?",new String[]{""});
-                                          /*  SimpleCursorAdapter simpleCursorAdapter = null;
-                                            Cursor mcursor=simpleCursorAdapter.getCursor();
-                                            mcursor.moveToPosition(location);
-                                           int  id= mcursor.getInt(mcursor.getColumnIndex("money"));*/
-                                            db.close();
-                                            datalist.remove(location);
-                                            simpleAdapter.notifyDataSetChanged();
+                                            Cursor cursor;
+                                            cursor = db.query("table_payin", null, null, null, null, null,null);
+                                            String delete_money=datalist.get(location).get("money").toString();
+                                            String delete_date=datalist.get(location).get("datetime").toString();
+                                            String delete_sort=datalist.get(location).get("sort").toString();
+                                            while (cursor.moveToNext()) {
+
+                                                int money = cursor.getInt(0);
+                                                String datetime=cursor.getString(1);
+                                                String sort=cursor.getString(2);
+                                                if( String.valueOf(money).equals(delete_money)&&datetime.equals(delete_date)&&sort.equals(delete_sort))
+                                                {
+                                                    db.delete("table_payin","datetime=? and money=?",new String[]{delete_sort,delete_money});
+                                                    db.close();
+                                                    Log.d(TAG,String.valueOf(delete_money));
+                                                    datalist.remove(location);
+                                                    simpleAdapter.notifyDataSetChanged();
+                                                }
+
+                                            }
+
 
                                         }
                                     })
@@ -124,9 +144,12 @@ public class BillListActivity extends AppCompatActivity {
                             return true;
                         }
                     });
+
+
                     tv_money_income_Onclick();
                     tv_date_income_Onclick();
                     tv_sort_income_Onclick();
+                    income_search_onclick();
                     zhichu_shouru.setText("当前为收入");
                     flag=false;
                     income.setText(":"+String.valueOf(sum_income)+"元");
@@ -159,14 +182,56 @@ public class BillListActivity extends AppCompatActivity {
                         map.put("introduce",introduce);
                         datalist.add(map);
                     }
+                    ls.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                        @Override
+                        public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                            final int location=position;
+                            simpleAdapter=new SimpleAdapter(BillListActivity.this,datalist,R.layout.item_list,dataKeyArr,itemIdArr);
+                            ls.setAdapter(simpleAdapter);
+                            new AlertDialog.Builder(BillListActivity.this)
+                                    .setTitle("警告")
+                                    .setMessage("你想删除这条数据吗")
+                                    .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            helper_out=new DatabaseHelper(BillListActivity.this,"table_payout",null,1);
+                                            SQLiteDatabase db=helper_out.getReadableDatabase();
+                                            Cursor cursor;
+                                            cursor = db.query("table_payout", null, null, null, null, null,null);
+                                            String delete_money=datalist.get(location).get("money").toString();
+                                            String delete_date=datalist.get(location).get("datetime").toString();
+                                            String delete_sort=datalist.get(location).get("sort").toString();
+                                            while (cursor.moveToNext()) {
+
+                                                int money = cursor.getInt(0);
+                                                String datetime=cursor.getString(1);
+                                                String sort=cursor.getString(2);
+                                                if( String.valueOf(money).equals(delete_money)&&datetime.equals(delete_date)&&sort.equals(delete_sort))
+                                                {
+                                                    db.delete("table_payout","datetime=? and money=?",new String[]{delete_sort,delete_money});
+                                                    db.close();
+                                                    Log.d(TAG,String.valueOf(delete_money));
+                                                    datalist.remove(location);
+                                                    simpleAdapter.notifyDataSetChanged();
+                                                }
+
+                                            }
+
+
+                                        }
+                                    })
+                                    .setNegativeButton("否",null)
+                                    .show();
+                            return true;
+                        }
+                    });
                     tv_money_expense_Onclick();
                     tv_date_expense_Onclick();
                     tv_sort_expense_Onclick();
+                    expense_search_onclick();
                     zhichu_shouru.setText("当前为支出");
                     flag=true;
-
                     expense.setText(":"+String.valueOf(sum_expense)+"元");
-
                 }
 
             }
@@ -178,6 +243,7 @@ public class BillListActivity extends AppCompatActivity {
                 showDatePickDlg();
             }
         });
+
         date2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,6 +253,9 @@ public class BillListActivity extends AppCompatActivity {
 
 
     }
+
+
+
     public void setclicklinster() {
         onClick onclick = new onClick();
         chakan.setOnClickListener(onclick);
@@ -238,8 +307,8 @@ public class BillListActivity extends AppCompatActivity {
     {
         helper_out=new DatabaseHelper(BillListActivity.this,"table_payout",null,1);
         SQLiteDatabase db=helper_out.getReadableDatabase();
-        //Cursor cursor=db.rawQuery("select sum(money) from table_payout",null);
-        Cursor cursor=db.rawQuery("select sum(money) from table_payout where sort=?",new String []{"交通"});
+        Cursor cursor=db.rawQuery("select sum(money) from table_payout",null);
+       // Cursor cursor=db.rawQuery("select sum(money) from table_payout where sort=?",new String []{"交通"});
         if (cursor.moveToFirst())
         {
             do
@@ -400,7 +469,7 @@ public class BillListActivity extends AppCompatActivity {
                     }
                     flag=true;
                     tv_money.setText("金额(asc)");
-                    tv_money.setText("金额");
+                    tv_date.setText("日期");
                     tv_sort.setText("类别");
                 }
             }
@@ -485,7 +554,7 @@ public class BillListActivity extends AppCompatActivity {
                     helper=new DatabaseHelperPayin(BillListActivity.this,"table_payin",null,1);
                     SQLiteDatabase db=helper.getReadableDatabase();
                     Cursor cursor;
-                    cursor = db.query("table_payin", null, null, null, null,null, "money desc");
+                    cursor = db.query("table_payin", null, null, null, null,null, "datetime desc");
                     while (cursor.moveToNext()) {
                         int money = cursor.getInt(0);
                         String datetime = cursor.getString(1);
@@ -515,7 +584,7 @@ public class BillListActivity extends AppCompatActivity {
                     helper=new DatabaseHelperPayin(BillListActivity.this,"table_payin",null,1);
                     SQLiteDatabase db=helper.getReadableDatabase();
                     Cursor cursor;
-                    cursor = db.query("table_payin", null, null, null, null,null, "money asc");
+                    cursor = db.query("table_payin", null, null, null, null,null, "datetime asc");
                     while (cursor.moveToNext()) {
                         int money = cursor.getInt(0);
                         String datetime = cursor.getString(1);
@@ -534,7 +603,7 @@ public class BillListActivity extends AppCompatActivity {
                         datalist.add(map);
                     }
                     flag=true;
-                    tv_date.setText("日期(desc)");
+                    tv_date.setText("日期(asc)");
                     tv_money.setText("金额");
                     tv_sort.setText("类别");
                 }
@@ -620,7 +689,7 @@ public class BillListActivity extends AppCompatActivity {
                     helper=new DatabaseHelperPayin(BillListActivity.this,"table_payin",null,1);
                     SQLiteDatabase db=helper.getReadableDatabase();
                     Cursor cursor;
-                    cursor = db.query("table_payin", null, null, null, null,null, "money desc");
+                    cursor = db.query("table_payin", null, null, null, null,null, "sort desc");
                     while (cursor.moveToNext()) {
                         int money = cursor.getInt(0);
                         String datetime = cursor.getString(1);
@@ -639,9 +708,9 @@ public class BillListActivity extends AppCompatActivity {
                         datalist.add(map);
                     }
                     flag=false;
-                    tv_date.setText("日期(desc)");
+                    tv_date.setText("日期");
                     tv_money.setText("金额");
-                    tv_sort.setText("类别");
+                    tv_sort.setText("类别(desc)");
                 }
                 else
                 {
@@ -650,7 +719,7 @@ public class BillListActivity extends AppCompatActivity {
                     helper=new DatabaseHelperPayin(BillListActivity.this,"table_payin",null,1);
                     SQLiteDatabase db=helper.getReadableDatabase();
                     Cursor cursor;
-                    cursor = db.query("table_payin", null, null, null, null,null, "money asc");
+                    cursor = db.query("table_payin", null, null, null, null,null, "sort asc");
                     while (cursor.moveToNext()) {
                         int money = cursor.getInt(0);
                         String datetime = cursor.getString(1);
@@ -669,9 +738,9 @@ public class BillListActivity extends AppCompatActivity {
                         datalist.add(map);
                     }
                     flag=true;
-                    tv_date.setText("日期(desc)");
+                    tv_date.setText("日期");
                     tv_money.setText("金额");
-                    tv_sort.setText("类别");
+                    tv_sort.setText("类别(asc)");
                 }
             }
         });
@@ -687,6 +756,79 @@ public class BillListActivity extends AppCompatActivity {
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
+    }
+    public void income_search_onclick()
+    {
+        msearch=findViewById(R.id.search);
+        msearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datalist.clear();
+                String start_date=date1.getText().toString();
+                String end_date=date2.getText().toString();
+                Log.d(TAG,start_date);
+                helper=new DatabaseHelperPayin(BillListActivity.this,"table_payin",null,1);
+                SQLiteDatabase db=helper.getReadableDatabase();
+                Cursor cursor;
+             //  cursor=db.query("table_payin",null,"money between ? and ?",new String[]{"12","23"},null,null,null);
+                 cursor = db.query("table_payin", null, "datetime between ? and ?",new String[]{start_date,end_date}, null, null,null);
+                while (cursor.moveToNext()) {
+                    int money = cursor.getInt(0);
+                    String datetime = cursor.getString(1);
+                    String sort = cursor.getString(2);
+                    String introduce= cursor.getString(3);
+                    Log.d(TAG,end_date);
+                    ls=findViewById(R.id.List_1);
+                    SimpleAdapter simpleAdapter=new SimpleAdapter(BillListActivity.this,datalist,R.layout.item_list,dataKeyArr,itemIdArr);
+                    ls.setAdapter(simpleAdapter);
+                    Map<String,Object> map;
+                    map=new HashMap<String,Object>();
+                    map.put("money",money);
+                    map.put("datetime",datetime);
+                    map.put("sort",sort);
+                    map.put("introduce",introduce);
+                    datalist.add(map);
+                }
+
+            }
+        });
+    }
+    public void expense_search_onclick()
+    {
+
+        msearch=findViewById(R.id.search);
+        msearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datalist.clear();
+                String start_date=date1.getText().toString();
+                String end_date=date2.getText().toString();
+                Log.d(TAG,start_date);
+                helper_out=new DatabaseHelper(BillListActivity.this,"table_payout",null,1);
+                SQLiteDatabase db=helper_out.getReadableDatabase();
+                Cursor cursor;
+                //  cursor=db.query("table_payout",null,"money between ? and ?",new String[]{"12","23"},null,null,null);
+                cursor = db.query("table_payout", null, "datetime between ? and ?",new String[]{start_date,end_date}, null, null,null);
+                while (cursor.moveToNext()) {
+                    int money = cursor.getInt(0);
+                    String datetime = cursor.getString(1);
+                    String sort = cursor.getString(2);
+                    String introduce= cursor.getString(3);
+                    Log.d(TAG,end_date);
+                    ls=findViewById(R.id.List_1);
+                    SimpleAdapter simpleAdapter=new SimpleAdapter(BillListActivity.this,datalist,R.layout.item_list,dataKeyArr,itemIdArr);
+                    ls.setAdapter(simpleAdapter);
+                    Map<String,Object> map;
+                    map=new HashMap<String,Object>();
+                    map.put("money",money);
+                    map.put("datetime",datetime);
+                    map.put("sort",sort);
+                    map.put("introduce",introduce);
+                    datalist.add(map);
+                }
+
+            }
+        });
     }
     protected void showDatePickDlg1() {
         Calendar calendar = Calendar.getInstance();

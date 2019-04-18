@@ -44,11 +44,9 @@
             android:textColor="#ffffff"/>
         />
         <Button
-            android:id="@+id/btn_pie"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <Button
-            android:id="@+id/btn_bar"
+            android:text="查询"
+            android:layout_gravity="center"
+            android:id="@+id/btn_serach"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

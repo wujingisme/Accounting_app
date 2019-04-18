@@ -32,9 +32,8 @@ import java.util.Calendar;
 public class AnalysisIncomeActivity extends AppCompatActivity {
     private DatabaseHelperPayin helperPayin;
     private Button jizhang,chakan,user,fenxibaogao;
-    private Button bt_shouru,bt_huafei;
-
-    private EditText editText1, editText2;
+    private Button bt_shouru,bt_huafei,btn_search;
+    private TextView date1, date2;
     private TextView tv_gongzhi,tv_zhuanzhuang,tv_jiangjin,tv_touzhi,tv_qita,tv_income;
     private PieChart mChart;
     private final String TAG="Piechart";
@@ -61,13 +60,99 @@ public class AnalysisIncomeActivity extends AppCompatActivity {
         m_jiangjin=((float)m_jiangjin/total)*100;
         m_touzhi=((float)m_touzhi/total)*100;
         m_qita=((float)m_qita/total)*100;
-
         y = new float[]{m_gongzhi,m_zhuanzhuang,m_jiangjin,m_touzhi,m_qita};
        setData(x.length);
+        date1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickDlg();
+            }
+        });
+        date2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickDlg1();
+            }
+        });
+        btn_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String start_date=date1.getText().toString();
+                String end_date=date2.getText().toString();
+                Log.d(TAG,start_date);
+                helperPayin=new DatabaseHelperPayin(AnalysisIncomeActivity.this,"table_payin",null,1);
+                SQLiteDatabase db=helperPayin.getReadableDatabase();
+
+                Cursor cursor_gongzhi=db.rawQuery("select sum(money) from table_payin where sort=?" +
+                        " and datetime between ? and ?",new String []{"工资",start_date,end_date});
+                if (cursor_gongzhi.moveToFirst())
+                { do
+                { m_gongzhi=cursor_gongzhi.getInt(0); }
+                while (cursor_gongzhi.moveToNext());
+                }
+                m_gongzhi2=m_gongzhi;
+                cursor_gongzhi.close();
+                // Log.d(TAG,String.valueOf(m_gongzhi));
+                Cursor cursor_zhuanzhuang=db.rawQuery("select sum(money) from table_payin where sort=?" +
+                        " and datetime between ? and ?",new String []{"转账",start_date,end_date});
+                if (cursor_zhuanzhuang.moveToFirst())
+                { do
+                {
+                    m_zhuanzhuang=cursor_zhuanzhuang.getInt(0); }
+                while (cursor_zhuanzhuang.moveToNext());
+                }m_zhuanzhuang2=m_zhuanzhuang;
+                cursor_zhuanzhuang.close();
+                 Log.d(TAG,String.valueOf(m_zhuanzhuang));
+                Cursor cursor_jiangjin=db.rawQuery("select sum(money) from table_payin where sort=?" +
+                        " and datetime between ? and ?",new String []{"奖金",start_date,end_date});
+
+                if(cursor_jiangjin.moveToFirst())
+                {
+                    do{
+                        m_jiangjin=cursor_jiangjin.getInt(0);
+                    }while (cursor_jiangjin.moveToNext());
+                }m_jiangjin2=m_jiangjin;
+                cursor_jiangjin.close();
+                 Log.d(TAG,String.valueOf(m_jiangjin));
+
+                Cursor cursor_touzhi=db.rawQuery("select sum(money) from table_payin where sort=?" +
+                        " and datetime between ? and ?",new String []{"投资",start_date,end_date});
+                if(cursor_touzhi.moveToFirst())
+                {
+                    do {
+                        m_touzhi=cursor_touzhi.getInt(0);
+
+                    }while (cursor_touzhi.moveToNext()) ;
+                }m_touzhi2=m_touzhi;
+                cursor_touzhi.close();
+               Log.d(TAG,String.valueOf(m_touzhi));
+                Cursor cursor_qita=db.rawQuery("select sum(money) from table_payin where sort=?" +
+                        " and datetime between ? and ?",new String []{"其他",start_date,end_date});
+                if(cursor_qita.moveToFirst())
+                {
+                    do {
+                        m_qita=cursor_qita.getInt(0);
+
+                    }while (cursor_qita.moveToNext()) ;
+                }m_qita2=m_qita;
+                cursor_qita.close();
+                initview2();
+                total=m_gongzhi+m_zhuanzhuang+m_jiangjin+m_touzhi+m_qita;
+                m_gongzhi=((float)m_gongzhi/total)*100;
+                m_zhuanzhuang=((float)m_zhuanzhuang/total)*100;
+                m_jiangjin=((float)m_jiangjin/total)*100;
+                m_touzhi=((float)m_touzhi/total)*100;
+                m_qita=((float)m_qita/total)*100;
+
+                y = new float[]{m_gongzhi,m_zhuanzhuang,m_jiangjin,m_touzhi,m_qita};
+                setData(x.length);
+
+            }
+        });
 
     }
 
-    DecimalFormat df=new DecimalFormat("0.00");
+    //DecimalFormat df=new DecimalFormat("0.00");
  public void QTotal_income()
     {
         helperPayin=new DatabaseHelperPayin(AnalysisIncomeActivity.this,"table_payin",null,1);
@@ -81,7 +166,7 @@ public class AnalysisIncomeActivity extends AppCompatActivity {
         }
         m_gongzhi2=m_gongzhi;
         cursor_gongzhi.close();
-     // Log.d(TAG,String.valueOf(m_gongzhi));
+      Log.d(TAG,String.valueOf(m_gongzhi));
          Cursor cursor_zhuanzhuang=db.rawQuery("select sum(money) from table_payin where sort=?",new String []{"转账"});
         if (cursor_zhuanzhuang.moveToFirst())
         { do
@@ -90,7 +175,7 @@ public class AnalysisIncomeActivity extends AppCompatActivity {
         while (cursor_zhuanzhuang.moveToNext());
         }m_zhuanzhuang2=m_zhuanzhuang;
         cursor_zhuanzhuang.close();
-       // Log.d(TAG,String.valueOf(m_zhuanzhuang));
+        Log.d(TAG,String.valueOf(m_zhuanzhuang));
        Cursor cursor_jiangjin=db.rawQuery("select sum(money) from table_payin where sort=?",new String []{"奖金"});
 
         if(cursor_jiangjin.moveToFirst())
@@ -121,12 +206,13 @@ public class AnalysisIncomeActivity extends AppCompatActivity {
             }while (cursor_qita.moveToNext()) ;
         }m_qita2=m_qita;
         cursor_qita.close();
-        Log.d(TAG,String.valueOf(m_qita)+"  qita");
+       // Log.d(TAG,String.valueOf(m_qita)+"  qita");
 
     }
 
     public void initview2()
     {
+        btn_search=findViewById(R.id.btn_serach);
         tv_income=findViewById(R.id.total_income2);
         tv_gongzhi=findViewById(R.id.total_gongzhi2);
         tv_jiangjin=findViewById(R.id.total_jiangjin2);
@@ -134,12 +220,14 @@ public class AnalysisIncomeActivity extends AppCompatActivity {
         tv_zhuanzhuang=findViewById(R.id.total_zhuanzhuang2);
         tv_qita=findViewById(R.id.total_qita2);
 
+        date1 = findViewById(R.id.Et_date1);
+        date2 = findViewById(R.id.Et_date2);
         tv_income.setText(String.valueOf(m_gongzhi+m_zhuanzhuang+m_jiangjin+m_touzhi+m_qita)+" 元");
-        tv_gongzhi.setText(String.valueOf(m_gongzhi)+" 元");
-        tv_zhuanzhuang.setText(String.valueOf((m_zhuanzhuang))+" 元");
-        tv_jiangjin.setText(String.valueOf(m_jiangjin)+" 元");
-        tv_touzhi.setText((String.valueOf(m_touzhi))+" 元");
-        tv_qita.setText(String .valueOf(m_qita)+" 元");
+        tv_gongzhi.setText(String.valueOf(m_gongzhi2)+" 元");
+        tv_zhuanzhuang.setText(String.valueOf((m_zhuanzhuang2))+" 元");
+        tv_jiangjin.setText(String.valueOf(m_jiangjin2)+" 元");
+        tv_touzhi.setText((String.valueOf(m_touzhi2))+" 元");
+        tv_qita.setText(String .valueOf(m_qita2)+" 元");
     }
 
     private void setData(int count) {
@@ -215,53 +303,6 @@ public class AnalysisIncomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-     /*  //调出日历
-        editText1 = findViewById(R.id.Et_date1);
-        editText2 = findViewById(R.id.Et_date2);
-        editText1.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    showDatePickDlg();
-                    return true;
-                }
-                return false;
-            }
-        });
-        editText2.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    showDatePickDlg1();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-
-        editText1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    showDatePickDlg();
-                }
-            }
-        });
-        editText2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    showDatePickDlg1();
-                }
-            }
-        });*/
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -271,7 +312,7 @@ public class AnalysisIncomeActivity extends AppCompatActivity {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                AnalysisIncomeActivity.this.editText1.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
+                AnalysisIncomeActivity.this.date1.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
@@ -283,7 +324,7 @@ public class AnalysisIncomeActivity extends AppCompatActivity {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                AnalysisIncomeActivity.this.editText2.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
+                AnalysisIncomeActivity.this.date2.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog1.show();

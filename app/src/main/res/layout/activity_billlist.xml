@@ -20,14 +20,15 @@
             android:text="时间"
             android:textColor="#ffffff"
             android:gravity=""/>
+
         <TextView
             android:id="@+id/Et_date1"
             android:layout_width="90dp"
-            android:layout_height="40dp"
-            android:text=""
-            android:hint="开始"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:textColor="#ffffff"/>
+            android:hint="开始"
+            android:text=""
+            android:textColor="#ffffff" />
         <TextView
             android:layout_width="12dp"
             android:layout_height="20dp"
@@ -42,6 +43,16 @@
             android:hint="结束"
             android:gravity="center"
             android:textColor="#ffffff"/>
+        <Button
+            android:id="@+id/search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="查询"
+            android:textSize="18sp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginLeft="50dp"
+            />
 
     </LinearLayout>
     <LinearLayout
@@ -51,7 +62,7 @@
         android:layout_below="@id/Ll_date1">
         <TextView
             android:id="@+id/_shouzhi"
-            android:layout_width="60dp"
+            android:layout_width="65dp"
             android:layout_height="match_parent"
             android:layout_marginRight="15dp"
             android:text="金额"
@@ -59,7 +70,7 @@
             android:textColor="#ffff"/>
         <TextView
             android:id="@+id/_sort"
-            android:layout_width="60dp"
+            android:layout_width="65dp"
             android:layout_height="match_parent"
             android:layout_marginRight="20dp"
             android:text="类别"
@@ -67,7 +78,7 @@
             android:textColor="#ffff"/>
         <TextView
             android:id="@+id/_jiner"
-            android:layout_width="60dp"
+            android:layout_width="65dp"
             android:layout_height="match_parent"
             android:layout_marginRight="15dp"
             android:text="日期"
@@ -75,7 +86,7 @@
             android:textColor="#ffff"/>
         <TextView
             android:id="@+id/_riqi"
-            android:layout_width="60dp"
+            android:layout_width="65dp"
             android:layout_height="match_parent"
             android:layout_marginRight="5dp"
             android:text="备注"

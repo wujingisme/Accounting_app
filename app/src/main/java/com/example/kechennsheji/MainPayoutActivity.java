@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.kechennsheji.SQLite.DatabaseHelper;
 import com.example.kechennsheji.SQLite.Pay;
@@ -45,22 +47,37 @@ private final static String TAG="insert";
         mBtn_confin=findViewById(R.id.confin);
         mBtn_confin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
-
-
-                int S_money= Integer.parseInt(mEt_Money.getText().toString());
+                //int S_money= Integer.parseInt(mEt_Money.getText().toString());
+                String S_money=(mEt_Money.getText().toString());
                 String S_calander=mEt_calander.getText().toString();
                 String S_sort=mEt_Sort.getText().toString();
                 String S_introduce=mEt_Introduce.getText().toString();
-                ContentValues contentValues=new ContentValues();
 
-                contentValues.put("money",S_money);
-                contentValues.put("sort",S_sort);
-                contentValues.put("datetime",S_calander);
-                contentValues.put("introduce",S_introduce);
-                db.insert("table_payout",null,contentValues);
-                db.close();
-                Log.d(TAG,"插入花费数据"+S_money);
+                if(TextUtils.isEmpty(S_money))
+                {
+                    Toast.makeText(MainPayoutActivity.this,"请你添加收入金额",Toast.LENGTH_SHORT).show();
+                }else if(TextUtils.isEmpty(S_calander))
+                {
+                    Toast.makeText(MainPayoutActivity.this,"请你添加收入日期",Toast.LENGTH_SHORT).show();
+
+                }else if(TextUtils.isEmpty(S_sort))
+                {
+                    Toast.makeText(MainPayoutActivity.this,"请你添加收入类别",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    ContentValues contentValues=new ContentValues();
+                    contentValues.put("money",S_money);
+                    contentValues.put("sort",S_sort);
+                    contentValues.put("datetime",S_calander);
+                    contentValues.put("introduce",S_introduce);
+                    db.insert("table_payout",null,contentValues);
+                    db.close();
+                    Log.d(TAG,"插入收入数据"+S_sort);
+                    Toast.makeText(MainPayoutActivity.this,"成功添加收入一条数据",Toast.LENGTH_SHORT).show();
+                    Intent intent=new Intent(MainPayoutActivity.this,MainPayoutActivity.class);
+                    startActivity(intent);
+                }
 
             }
         });

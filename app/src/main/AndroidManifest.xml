@@ -47,7 +47,8 @@
         <activity
             android:name=".MainPayinActivity"
             android:label="收入来源" />
-        <activity android:name=".MgPayinsortActivity" />
+        <activity android:name=".MgPayinsortActivity"
+            android:label="收入类别" />
         <activity android:name=".AnalysisIncomeActivity"></activity>
     </application>
 
