@@ -54,14 +54,14 @@ public class AnalysisIncomeActivity extends AppCompatActivity {
         // 以7个对应数据集做测试
         QTotal_income();
         initview2();
-         total=m_gongzhi+m_zhuanzhuang+m_jiangjin+m_touzhi+m_qita;
+        total=m_gongzhi+m_zhuanzhuang+m_jiangjin+m_touzhi+m_qita;
         m_gongzhi=((float)m_gongzhi/total)*100;
         m_zhuanzhuang=((float)m_zhuanzhuang/total)*100;
         m_jiangjin=((float)m_jiangjin/total)*100;
         m_touzhi=((float)m_touzhi/total)*100;
         m_qita=((float)m_qita/total)*100;
         y = new float[]{m_gongzhi,m_zhuanzhuang,m_jiangjin,m_touzhi,m_qita};
-       setData(x.length);
+        setData(x.length);
         date1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,7 +102,7 @@ public class AnalysisIncomeActivity extends AppCompatActivity {
                 while (cursor_zhuanzhuang.moveToNext());
                 }m_zhuanzhuang2=m_zhuanzhuang;
                 cursor_zhuanzhuang.close();
-                 Log.d(TAG,String.valueOf(m_zhuanzhuang));
+                Log.d(TAG,String.valueOf(m_zhuanzhuang));
                 Cursor cursor_jiangjin=db.rawQuery("select sum(money) from table_payin where sort=?" +
                         " and datetime between ? and ?",new String []{"奖金",start_date,end_date});
 
@@ -113,7 +113,7 @@ public class AnalysisIncomeActivity extends AppCompatActivity {
                     }while (cursor_jiangjin.moveToNext());
                 }m_jiangjin2=m_jiangjin;
                 cursor_jiangjin.close();
-                 Log.d(TAG,String.valueOf(m_jiangjin));
+                Log.d(TAG,String.valueOf(m_jiangjin));
 
                 Cursor cursor_touzhi=db.rawQuery("select sum(money) from table_payin where sort=?" +
                         " and datetime between ? and ?",new String []{"投资",start_date,end_date});
@@ -125,7 +125,7 @@ public class AnalysisIncomeActivity extends AppCompatActivity {
                     }while (cursor_touzhi.moveToNext()) ;
                 }m_touzhi2=m_touzhi;
                 cursor_touzhi.close();
-               Log.d(TAG,String.valueOf(m_touzhi));
+                Log.d(TAG,String.valueOf(m_touzhi));
                 Cursor cursor_qita=db.rawQuery("select sum(money) from table_payin where sort=?" +
                         " and datetime between ? and ?",new String []{"其他",start_date,end_date});
                 if(cursor_qita.moveToFirst())
@@ -153,12 +153,12 @@ public class AnalysisIncomeActivity extends AppCompatActivity {
     }
 
     //DecimalFormat df=new DecimalFormat("0.00");
- public void QTotal_income()
+    public void QTotal_income()
     {
         helperPayin=new DatabaseHelperPayin(AnalysisIncomeActivity.this,"table_payin",null,1);
         SQLiteDatabase db=helperPayin.getReadableDatabase();
 
-       Cursor cursor_gongzhi=db.rawQuery("select sum(money) from table_payin where sort=?",new String []{"工资"});
+        Cursor cursor_gongzhi=db.rawQuery("select sum(money) from table_payin where sort=?",new String []{"工资"});
         if (cursor_gongzhi.moveToFirst())
         { do
         { m_gongzhi=cursor_gongzhi.getInt(0); }
@@ -166,8 +166,8 @@ public class AnalysisIncomeActivity extends AppCompatActivity {
         }
         m_gongzhi2=m_gongzhi;
         cursor_gongzhi.close();
-      Log.d(TAG,String.valueOf(m_gongzhi));
-         Cursor cursor_zhuanzhuang=db.rawQuery("select sum(money) from table_payin where sort=?",new String []{"转账"});
+        Log.d(TAG,String.valueOf(m_gongzhi));
+        Cursor cursor_zhuanzhuang=db.rawQuery("select sum(money) from table_payin where sort=?",new String []{"转账"});
         if (cursor_zhuanzhuang.moveToFirst())
         { do
         {
@@ -176,7 +176,7 @@ public class AnalysisIncomeActivity extends AppCompatActivity {
         }m_zhuanzhuang2=m_zhuanzhuang;
         cursor_zhuanzhuang.close();
         Log.d(TAG,String.valueOf(m_zhuanzhuang));
-       Cursor cursor_jiangjin=db.rawQuery("select sum(money) from table_payin where sort=?",new String []{"奖金"});
+        Cursor cursor_jiangjin=db.rawQuery("select sum(money) from table_payin where sort=?",new String []{"奖金"});
 
         if(cursor_jiangjin.moveToFirst())
         {
@@ -185,7 +185,7 @@ public class AnalysisIncomeActivity extends AppCompatActivity {
             }while (cursor_jiangjin.moveToNext());
         }m_jiangjin2=m_jiangjin;
         cursor_jiangjin.close();
-      //  Log.d(TAG,String.valueOf(m_jiangjin));
+        //  Log.d(TAG,String.valueOf(m_jiangjin));
 
         Cursor cursor_touzhi=db.rawQuery("select sum(money) from table_payin where sort=?",new String []{"投资"});
         if(cursor_touzhi.moveToFirst())
@@ -196,8 +196,8 @@ public class AnalysisIncomeActivity extends AppCompatActivity {
             }while (cursor_touzhi.moveToNext()) ;
         }m_touzhi2=m_touzhi;
         cursor_touzhi.close();
-       // Log.d(TAG,String.valueOf(m_touzhi));
-       Cursor cursor_qita=db.rawQuery("select sum(money) from table_payin where sort=?",new String []{"其他"});
+        // Log.d(TAG,String.valueOf(m_touzhi));
+        Cursor cursor_qita=db.rawQuery("select sum(money) from table_payin where sort=?",new String []{"其他"});
         if(cursor_qita.moveToFirst())
         {
             do {
@@ -206,7 +206,7 @@ public class AnalysisIncomeActivity extends AppCompatActivity {
             }while (cursor_qita.moveToNext()) ;
         }m_qita2=m_qita;
         cursor_qita.close();
-       // Log.d(TAG,String.valueOf(m_qita)+"  qita");
+        // Log.d(TAG,String.valueOf(m_qita)+"  qita");
 
     }
 

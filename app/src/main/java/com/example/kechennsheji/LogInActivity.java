@@ -52,8 +52,8 @@ public class LogInActivity extends AppCompatActivity {
                 spPsw=readPsw(userName);
 
 
-                startActivity(new Intent(LogInActivity.this,MainPayoutActivity.class));
-            /*    if(isMobileNum(userName))
+               // startActivity(new Intent(LogInActivity.this,MainPayoutActivity.class));
+              if(isMobileNum(userName))
                 {
                     if (TextUtils.isEmpty(userName)) {
                         Toast.makeText(LogInActivity.this, "请输入手机号", Toast.LENGTH_SHORT).show();
@@ -84,7 +84,7 @@ public class LogInActivity extends AppCompatActivity {
                     }else
                         {
                             Toast.makeText(LogInActivity.this,"您输入的手机号有误！",Toast.LENGTH_SHORT).show();
-                        }*/
+                        }
             }
         });
 

@@ -93,8 +93,8 @@ public class AnalysisChartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                 String start_date=date1.getText().toString();
-                 String end_date=date2.getText().toString();
+                String start_date=date1.getText().toString();
+                String end_date=date2.getText().toString();
                 Log.d(TAG,start_date);
 
                 helper_out=new DatabaseHelper(AnalysisChartActivity.this,"table_payout",null,1);
@@ -198,7 +198,7 @@ public class AnalysisChartActivity extends AppCompatActivity {
     {
         helper_out=new DatabaseHelper(AnalysisChartActivity.this,"table_payout",null,1);
         SQLiteDatabase db=helper_out.getReadableDatabase();
-       // Cursor cursor_jiaotong=db.rawQuery("select sum(money) from table_payout where sort=?",new String []{"交通"});
+        // Cursor cursor_jiaotong=db.rawQuery("select sum(money) from table_payout where sort=?",new String []{"交通"});
         Cursor cursor_jiaotong=db.rawQuery("select sum(money) from table_payout where sort=?",new String []{"交通"});
         Cursor cursor_zhufang=db.rawQuery("select sum(money) from table_payout where sort=?",new String []{"住房"});
         Cursor cursor_yiliao=db.rawQuery("select sum(money) from table_payout where sort=?",new String []{"医疗"});

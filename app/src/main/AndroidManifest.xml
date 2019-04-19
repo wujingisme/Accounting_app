@@ -14,6 +14,10 @@
         <activity
             android:name=".LogInActivity"
             android:label="用户登录">
+        </activity>
+        <activity
+            android:name=".MainPayoutActivity"
+            android:label="日常支出" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,20 +25,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainPayoutActivity"
-            android:label="日常支出" />
-        <activity
             android:name=".BillListActivity"
             android:label="查看账单" />
         <activity
             android:name=".AnalysisChartActivity"
             android:label="分析报告" />
+
         <activity
             android:name=".User.UserActivity"
             android:label="用户中心" />
+
         <activity
             android:name=".RegisterActivity"
             android:label="新用户注册" />
+
         <activity
             android:name=".User.UserInfoActivity"
             android:label="信息" />
@@ -50,6 +54,8 @@
         <activity android:name=".MgPayinsortActivity"
             android:label="收入类别" />
         <activity android:name=".AnalysisIncomeActivity"></activity>
+        <activity android:name=".User.ModfypswActivity"
+            android:label="修改密码"></activity>
     </application>
 
 </manifest>

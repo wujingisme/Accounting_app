@@ -9,7 +9,7 @@
     android:background="#55AA99"
     tools:context=".User.SettingActivity">
     <Button
-        android:id="@+id/bt_changepw"
+        android:id="@+id/bt_changepsw"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="修改密码"
@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="用户资料"
-        android:layout_below="@+id/bt_changepw"
+        android:layout_below="@+id/bt_changepsw"
         android:background="@drawable/bg_username"/>
     <Button
         android:id="@+id/bt_loginout"

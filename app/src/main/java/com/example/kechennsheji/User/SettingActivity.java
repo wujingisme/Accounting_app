@@ -11,6 +11,7 @@ import com.example.kechennsheji.R;
 public class SettingActivity extends AppCompatActivity {
     private Button user_info;
     private Button login_out;
+    private Button chanegepsw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +19,7 @@ public class SettingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setting);
         user_info=findViewById(R.id.bt_userinfo);
         login_out=findViewById(R.id.bt_loginout);
+        chanegepsw=findViewById(R.id.bt_changepsw);
         setclicklinster();
     }
     public void setclicklinster()
@@ -25,6 +27,7 @@ public class SettingActivity extends AppCompatActivity {
        onClick onclick=new onClick();
         user_info.setOnClickListener(onclick);
         login_out.setOnClickListener(onclick);
+        chanegepsw.setOnClickListener(onclick);
 
     }
     private class onClick implements View.OnClickListener{
@@ -33,7 +36,9 @@ public class SettingActivity extends AppCompatActivity {
             Intent intent=null;
             switch (view.getId())
             {
-
+                case R.id.bt_changepsw:
+                    intent=new Intent(SettingActivity.this,ModfypswActivity.class);
+                    break;
                 case R.id.bt_userinfo:
                     intent=new Intent(SettingActivity.this,UserInfoActivity.class);
                     break;
