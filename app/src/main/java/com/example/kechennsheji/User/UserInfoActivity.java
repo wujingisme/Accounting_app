@@ -6,6 +6,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +18,8 @@ public class UserInfoActivity extends AppCompatActivity {
     private EditText et_username,et_nickname,et_gender,et_age;
     private String username,nickname,gender,age,spUsername;
     private Button bt_save;
+    private final static String TAG="insert";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,20 @@ public class UserInfoActivity extends AppCompatActivity {
         initview();
         SharedPreferences sp = getSharedPreferences("LoginInfo", MODE_PRIVATE);
         spUsername=sp.getString("loginUserName","");
+        SharedPreferences sharedPreferences=getSharedPreferences("Userinfo",MODE_PRIVATE);
+        String a= spUsername+"nickname";
+        String b= spUsername+"age";
+        String c= spUsername+"gender";
+        Log.d(TAG,"用户信息"+c);
+        nickname=sharedPreferences.getString(a,"");
+        age=sharedPreferences.getString(b,"");
+        gender=sharedPreferences.getString(c,"");
+        et_nickname.setText(nickname);
+        et_age.setText(age);
+        et_gender.setText(gender);
+       /* et_nickname.setFocusableInTouchMode(false);
+        et_age.setFocusable(false);
+        et_age.setFocusableInTouchMode(false)*/;
         et_username.setText(spUsername);
         et_gender.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +88,12 @@ public class UserInfoActivity extends AppCompatActivity {
                     et_nickname.setFocusableInTouchMode(false);
                     et_age.setFocusable(false);
                     et_age.setFocusableInTouchMode(false);
+                    SharedPreferences sharedPreferences=getSharedPreferences("Userinfo",MODE_PRIVATE);
+                   SharedPreferences.Editor editor=sharedPreferences.edit();
+                   editor.putString(username+"nickname",nickname);
+                   editor.putString(username+"age",age);
+                   editor.putString(username+"gender",gender);
+                   editor.commit();
                     Toast.makeText(UserInfoActivity.this, "成功保存个人信息！", Toast.LENGTH_SHORT).show();
                 }
 
