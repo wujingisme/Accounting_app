@@ -2,8 +2,10 @@ package com.example.kechennsheji;
 
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -21,6 +23,7 @@ import com.example.kechennsheji.SQLite.DatabaseHelper;
 import com.example.kechennsheji.SQLite.DatabaseHelperPayin;
 import com.example.kechennsheji.SQLite.Pay;
 import com.example.kechennsheji.User.UserActivity;
+import com.example.kechennsheji.User.UserInfoActivity;
 
 import org.w3c.dom.Text;
 
@@ -83,13 +86,39 @@ public class MainPayinActivity extends AppCompatActivity{
 
             }
         });
-        //调出分类
-        m_sort=getIntent().getStringExtra("name");
-        mEt_Sort.setText(m_sort);
+
         mEt_calander.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePickDlg();
+            }
+        });
+
+        //调出分类
+        //m_sort=getIntent().getStringExtra("name");
+        //mEt_Sort.setText(m_sort);
+        mBtnManagerSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainPayinActivity.this,android.R.style.Theme_Holo_Light_Dialog);
+                //builder.setIcon(R.drawable.ic_launcher);
+                builder.setTitle("选择类别");
+                //    指定下拉列表的显示数据
+                final String[] sort = { "工资", "转账", "奖金","投资","其他"};
+                //    设置一个下拉的列表选择项
+                builder.setItems(sort, new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        mEt_Sort.setText(sort[which]);
+
+                    }
+                });
+                builder.show();
+
+
             }
         });
 
@@ -106,7 +135,7 @@ public class MainPayinActivity extends AppCompatActivity{
         user.setOnClickListener(onclick);
         Rd_payin.setOnClickListener(onclick);
         Rd_payout.setOnClickListener(onclick);
-        mBtnManagerSort.setOnClickListener(onclick);
+       // mBtnManagerSort.setOnClickListener(onclick);
 
     }
     public void initView()
@@ -143,9 +172,9 @@ public class MainPayinActivity extends AppCompatActivity{
                 case R.id.btn_yonghuzhongxin:
                     intent=new Intent(MainPayinActivity.this,UserActivity.class);
                     break;
-                case R.id.manager_sort:
+                /*case R.id.manager_sort:
                     intent=new Intent(MainPayinActivity.this,MgPayinsortActivity.class);
-                    break;
+                    break;*/
                 case R.id.RB_payout:
                     intent=new Intent(MainPayinActivity.this,MainPayoutActivity.class);
                     break;

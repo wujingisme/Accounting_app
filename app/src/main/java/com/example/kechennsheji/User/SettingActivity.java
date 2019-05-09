@@ -12,7 +12,7 @@ public class SettingActivity extends AppCompatActivity {
     private Button user_info;
     private Button login_out;
     private Button chanegepsw;
-
+    private Button mibao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +20,7 @@ public class SettingActivity extends AppCompatActivity {
         user_info=findViewById(R.id.bt_userinfo);
         login_out=findViewById(R.id.bt_loginout);
         chanegepsw=findViewById(R.id.bt_changepsw);
+        mibao=findViewById(R.id.bt_mibao);
         setclicklinster();
     }
     public void setclicklinster()
@@ -28,6 +29,7 @@ public class SettingActivity extends AppCompatActivity {
         user_info.setOnClickListener(onclick);
         login_out.setOnClickListener(onclick);
         chanegepsw.setOnClickListener(onclick);
+        mibao.setOnClickListener(onclick);
 
     }
     private class onClick implements View.OnClickListener{
@@ -44,6 +46,9 @@ public class SettingActivity extends AppCompatActivity {
                     break;
                 case R.id.bt_loginout:
                     intent=new Intent(SettingActivity.this,LogInActivity.class);
+                    break;
+                case R.id.bt_mibao:
+                    intent=new Intent(SettingActivity.this,MibaoActivity.class);
                     break;
             }
             startActivity(intent);

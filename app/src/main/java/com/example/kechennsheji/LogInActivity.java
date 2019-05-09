@@ -1,30 +1,51 @@
 package com.example.kechennsheji;
 
+import android.app.Activity;
+import android.app.Application;
+import android.content.ComponentCallbacks;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.text.style.LineHeightSpan;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kechennsheji.SQLite.AppUtils;
+import com.example.kechennsheji.User.FindPasswordActivity;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LogInActivity extends AppCompatActivity {
+
+
+    private static float appDensity;
+    private static float appScaledDensity;
+    private static DisplayMetrics appDisplayMetrics;
+    private static int barHeight;
+
     private Button mBtnLogin;
     private EditText mEt_username;
     private EditText mEt_password;
-    private TextView mTextView;
+    private TextView mTextView,mTv_findpwd;
     private String userName,psw,spPsw;
+   //private ClassLoader appalication;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+       // setOrientation(this,AppUtils.WIDTH);
         setContentView(R.layout.activity_login);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         interview();
@@ -35,6 +56,7 @@ public class LogInActivity extends AppCompatActivity {
         mTextView=findViewById(R.id.bt_mind2);
         mEt_username=findViewById(R.id.et_1);
         mEt_password=findViewById(R.id.et_2);
+        mTv_findpwd=findViewById(R.id.bt_fdpwd);
         mTextView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +65,14 @@ public class LogInActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        mTv_findpwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(LogInActivity.this,FindPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
+
         mBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,13 +93,10 @@ public class LogInActivity extends AppCompatActivity {
                         return;
                     }  else if (MD5psw.equals(spPsw)) {
                         Toast.makeText(LogInActivity.this, "登录成功！", Toast.LENGTH_SHORT).show();
-
                         saveLoginStatu(true,userName);
                         Intent data =new Intent();
                         data.putExtra("isLogin",true);
                         setResult(RESULT_OK,data);
-
-
                         startActivity(new Intent(LogInActivity.this,MainPayoutActivity.class));
                         LogInActivity.this.finish();
                         return;
@@ -114,5 +141,42 @@ public class LogInActivity extends AppCompatActivity {
         Matcher m= pattern.matcher(mobiles);
         return m.matches();
     }
+
+
+
+    public  static void setDensity(final Application application) {
+        //获取application的DisplayMetrics
+        appDisplayMetrics = application.getResources().getDisplayMetrics();
+        //获取状态栏高度
+        barHeight = AppUtils.getStatusBarHeight(application);
+        if (appDensity == 0) { //初始化的时候赋值
+            appDensity = appDisplayMetrics.density;
+            appScaledDensity = appDisplayMetrics.scaledDensity; //添加字体变化的监听
+            application.registerComponentCallbacks(new ComponentCallbacks()
+            { @Override
+            public void onConfigurationChanged(Configuration newConfig) { //字体改变后,将appScaledDensity重新赋值
+                if (newConfig != null && newConfig.fontScale > 0)
+                { appScaledDensity =application.getResources().getDisplayMetrics().scaledDensity; } }
+                @Override
+                public void onLowMemory() { } }); } }
+                //此方法在BaseActivity中做初始化(如果不封装BaseActivity的话,直接用下面那个方法就好了)
+    public static void setDefault(Activity activity) { setAppOrientation(activity, AppUtils.WIDTH); }
+    //此方法用于在某一个Activity里面更改适配的方向
+    public static void setOrientation(Activity activity, String orientation)
+    { setAppOrientation(activity, orientation); }
+    /** * targetDensity * targetScaledDensity * targetDensityDpi
+     * 这三个参数是统一修改过后的值 * <p> * orientation:方向值,传入width或height */
+    private static void setAppOrientation(@Nullable Activity activity, String orientation)
+    { float targetDensity;
+        if (orientation.equals("height"))
+        { targetDensity = (appDisplayMetrics.heightPixels - barHeight) / 667f; }
+        else { targetDensity = appDisplayMetrics.widthPixels / 360f; }
+        float targetScaledDensity = targetDensity * (appScaledDensity / appDensity);
+        int targetDensityDpi = (int) (160 * targetDensity);
+        /** * * 最后在这里将修改过后的值赋给系统参数 * * 只修改Activity的density值 */
+        DisplayMetrics activityDisplayMetrics = activity.getResources().getDisplayMetrics();
+        activityDisplayMetrics.density = targetDensity;
+        activityDisplayMetrics.scaledDensity = targetScaledDensity;
+        activityDisplayMetrics.densityDpi = targetDensityDpi; }
 
 }

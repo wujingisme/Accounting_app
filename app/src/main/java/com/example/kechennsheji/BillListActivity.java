@@ -51,8 +51,16 @@ public class BillListActivity extends AppCompatActivity {
     private String[]   dataKeyArr=new String[]{"money","datetime","sort","introduce"};
     SQLiteDatabase db;
     SimpleAdapter simpleAdapter;
-    //SimpleCursorAdapter mSimpleCursorAdapter ;
-
+    /*SimpleAdapter的参数说明
+     * 第一个参数 表示访问整个android应用程序接口，基本上所有的组件都需要
+     * 第二个参数表示生成一个Map(String ,Object)列表选项
+     * 第三个参数表示界面布局的id 表示该文件作为列表项的组件
+     * 第四个参数表示该Map对象的哪些key对应value来生成列表项
+     * 第五个参数表示来填充的组件 Map对象key对应的资源一依次填充组件 顺序有对应关系
+     * 注意的是map对象可以key可以找不到 但组件的必须要有资源填充 因为 找不到key也会返回null 其实就相当于给了一个null资源
+     * 下面的程序中如果 new String[] { "name", "head", "desc","name" } new int[] {R.id.name,R.id.head,R.id.desc,R.id.head}
+     * 这个head的组件会被name资源覆盖
+     * */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +70,7 @@ public class BillListActivity extends AppCompatActivity {
         setclicklinster();
         helper=new DatabaseHelperPayin(BillListActivity.this,"table_payin",null,1);
         db=helper.getReadableDatabase();
+        db.delete("table_payin","sort=?",new String[]{""});
         ls=findViewById(R.id.List_1);
 
         simpleAdapter=new SimpleAdapter(BillListActivity.this,datalist,R.layout.item_list,dataKeyArr,itemIdArr);
@@ -161,6 +170,8 @@ public class BillListActivity extends AppCompatActivity {
                     datalist.clear();
                     helper_out=new DatabaseHelper(BillListActivity.this,"table_payout",null,1);
                     SQLiteDatabase db=helper_out.getReadableDatabase();
+                    db.delete("table_payout","datetime=?",new String[]{""});
+                    db.delete("table_payout","sort=?",new String[]{""});
                     Cursor cursor;
                     cursor = db.query("table_payout", null, null, null, null, null, "money desc");
                     while (cursor.moveToNext()) {

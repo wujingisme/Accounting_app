@@ -3,8 +3,10 @@ package com.example.kechennsheji;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -88,8 +90,32 @@ private final static String TAG="insert";
             }
         });
        //调出分类
-        m_sort=getIntent().getStringExtra("name");
-        mEt_Sort.setText(m_sort);
+      /*  m_sort=getIntent().getStringExtra("name");
+        mEt_Sort.setText(m_sort);*/
+        mBtnManagerSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainPayoutActivity.this,android.R.style.Theme_Holo_Light_Dialog);
+                //builder.setIcon(R.drawable.ic_launcher);
+                builder.setTitle("选择类别");
+                //    指定下拉列表的显示数据
+                final String[] sort = {"交通", "住房", "医疗","娱乐","教育","生活用品","其他"};
+                //    设置一个下拉的列表选择项
+                builder.setItems(sort, new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        mEt_Sort.setText(sort[which]);
+
+                    }
+                });
+                builder.show();
+
+
+            }
+        });
 
     }
 
@@ -104,7 +130,7 @@ private final static String TAG="insert";
         user.setOnClickListener(onclick);
         Rd_payin.setOnClickListener(onclick);
         Rd_payout.setOnClickListener(onclick);
-        mBtnManagerSort.setOnClickListener(onclick);
+        //mBtnManagerSort.setOnClickListener(onclick);
 
 }
    @SuppressLint("WrongViewCast")
@@ -142,9 +168,9 @@ private final static String TAG="insert";
                 case R.id.btn_yonghuzhongxin:
                     intent=new Intent(MainPayoutActivity.this,UserActivity.class);
                     break;
-                case R.id.manager_sort:
+                /*case R.id.manager_sort:
                     intent=new Intent(MainPayoutActivity.this,MgPayoutsortActivity.class);
-                    break;
+                    break;*/
                 case R.id.RB_payin:
                     intent=new Intent(MainPayoutActivity.this,MainPayinActivity.class);
                     break;

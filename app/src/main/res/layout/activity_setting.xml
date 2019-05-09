@@ -22,11 +22,18 @@
         android:layout_below="@+id/bt_changepsw"
         android:background="@drawable/bg_username"/>
     <Button
+        android:id="@+id/bt_mibao"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="设置密保"
+        android:layout_below="@+id/bt_userinfo"
+        android:background="@drawable/bg_username"/>
+    <Button
         android:id="@+id/bt_loginout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="退出登录"
-        android:layout_below="@+id/bt_userinfo"
+        android:layout_below="@+id/bt_mibao"
         android:background="@drawable/bg_username"/>
 
 </RelativeLayout>

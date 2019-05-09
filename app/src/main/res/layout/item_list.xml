@@ -32,7 +32,7 @@
         android:textColor="#ffff"/>
     <TextView
         android:id="@+id/tv_riqi"
-        android:layout_width="60dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginRight="20dp"
         android:text="备注"

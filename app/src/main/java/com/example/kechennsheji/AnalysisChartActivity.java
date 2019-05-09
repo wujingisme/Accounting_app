@@ -180,15 +180,8 @@ public class AnalysisChartActivity extends AppCompatActivity {
                 m_jiaoyu=((float)m_jiaoyu/total)*100;
                 m_shenghuoyongping=((float)m_shenghuoyongping/total)*100;
                 m_qita=((float)m_qita/total)*100;
-
                 y = new float[]{m_jiaotong,m_zhufang,m_yiliao,m_yule,m_jiaoyu,m_shenghuoyongping,m_qita};
                 setData(x.length);
-
-
-
-
-
-
             }
         });
 
@@ -325,12 +318,6 @@ public class AnalysisChartActivity extends AppCompatActivity {
         mChart.setData(data);
         mChart.invalidate();
 
-   /*     date1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePickDlg();
-            }
-        });*/
 
     }
     public void setclicklinster() {
