@@ -2,6 +2,7 @@
 
         import android.app.AlertDialog;
         import android.app.DatePickerDialog;
+        import android.app.TimePickerDialog;
         import android.content.ContentValues;
         import android.content.DialogInterface;
         import android.content.Intent;
@@ -10,6 +11,7 @@
         import android.support.v7.app.AppCompatActivity;
         import android.os.Bundle;
         import android.util.Log;
+        import android.view.KeyEvent;
         import android.view.View;
         import android.widget.AdapterView;
         import android.widget.Button;
@@ -20,13 +22,18 @@
         import android.widget.SimpleAdapter;
         import android.widget.SimpleCursorAdapter;
         import android.widget.TextView;
+        import android.widget.TimePicker;
+        import android.widget.Toast;
 
         import com.example.kechennsheji.SQLite.DatabaseHelper;
         import com.example.kechennsheji.SQLite.DatabaseHelperPayin;
         import com.example.kechennsheji.User.UserActivity;
 
+        import java.sql.Connection;
+        import java.text.SimpleDateFormat;
         import java.util.ArrayList;
         import java.util.Calendar;
+        import java.util.Date;
         import java.util.HashMap;
         import java.util.List;
         import java.util.Map;
@@ -110,7 +117,272 @@ public class BillListActivity extends AppCompatActivity {
                         datalist.add(map);
 
                     }
-                    ls.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    //点击修改数据内容
+                  ls.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                      @Override
+                      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                              final int location=position;
+                              final String[] items = {"金额","日期(格式为YY-MM-DD)","分类","备注"};
+                              final AlertDialog.Builder builder = new AlertDialog.Builder(BillListActivity.this);
+                              builder .setTitle("你想修改这条数据什么内容？");
+                              builder.setItems(items, new DialogInterface.OnClickListener() {
+                                  @Override
+                                  public void onClick(DialogInterface dialogInterface, int i) {
+                                      dialogInterface.dismiss();
+                                      simpleAdapter=new SimpleAdapter(BillListActivity.this,datalist,R.layout.item_list,dataKeyArr,itemIdArr);
+                                      ls.setAdapter(simpleAdapter);
+                                      helper=new DatabaseHelperPayin(BillListActivity.this,"table_payin",null,1);
+                                       final SQLiteDatabase db=helper.getReadableDatabase();
+                                      final Cursor cursor;
+                                      cursor = db.query("table_payin", null, null, null, null,null, null);
+                                      final EditText editText = new EditText(BillListActivity.this);
+
+                                      final AlertDialog.Builder builder = new AlertDialog.Builder(BillListActivity.this);
+                                      switch (i){
+                                          case 0:
+                                              builder.setTitle("将金额修改为：");
+                                              builder.setIcon(R.mipmap.ic_launcher);
+                                              builder.setView(editText);
+                                              builder.setPositiveButton("确定", new DialogInterface.OnClickListener()
+                                              { @Override
+                                              public void onClick(DialogInterface dialog, int which) {
+                                                  //找出当前位置的金额
+                                                  String delete_money=datalist.get(location).get("money").toString();
+                                                  datalist.clear();
+                                                  ContentValues values=new ContentValues();
+                                                  values.put("money",editText.getText().toString());
+                                                  db.update("table_payin",values,"money=?",new String[]{delete_money});
+                                                  while (cursor.moveToNext()) {
+                                                      int money = cursor.getInt(0);
+                                                      String datetime = cursor.getString(1);
+                                                      String sort = cursor.getString(2);
+                                                      String introduce= cursor.getString(3);
+                                                      final Map<String,Object> map;
+                                                      map=new HashMap<String,Object>();
+                                                      map.put("money",money);
+                                                      map.put("datetime",datetime);
+                                                      map.put("sort",sort);
+                                                      map.put("introduce",introduce);
+                                                      datalist.add(map);
+                                                      simpleAdapter.notifyDataSetChanged();
+
+                                                  }
+
+
+                                              } });
+                                              builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                                  @Override public void onClick(DialogInterface dialog, int which)
+                                                  { dialog.cancel(); } });
+                                              builder.create().show();
+                                              break;
+                                          case 1:
+                                              builder.setTitle("将日期修改为：");
+                                              builder.setIcon(R.mipmap.ic_launcher);
+                                              builder.setView(editText);
+                                              builder.setPositiveButton("确定", new DialogInterface.OnClickListener()
+                                              { @Override
+                                              public void onClick(DialogInterface dialog, int which) {
+                                                  //找出当前位置的日期
+                                                  String delete_sort=datalist.get(location).get("sort").toString();
+                                                  datalist.clear();
+                                                  ContentValues values=new ContentValues();
+                                                  values.put("datetime",editText.getText().toString());
+                                                  db.update("table_payin",values,"datetime=?",new String[]{delete_sort});
+                                                  while (cursor.moveToNext()) {
+                                                      int money = cursor.getInt(0);
+                                                      String datetime = cursor.getString(1);
+                                                      String sort = cursor.getString(2);
+                                                      String introduce= cursor.getString(3);
+                                                      final Map<String,Object> map;
+                                                      map=new HashMap<String,Object>();
+                                                      map.put("money",money);
+                                                      map.put("datetime",datetime);
+                                                      map.put("sort",sort);
+                                                      map.put("introduce",introduce);
+                                                      datalist.add(map);
+                                                      simpleAdapter.notifyDataSetChanged();
+                                                  }
+
+                                              } });
+                                              builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                                  @Override public void onClick(DialogInterface dialog, int which)
+                                                  { dialog.cancel(); } });
+                                              builder.create().show();
+                                              break;
+                                          case 2:
+                                              final String[] items = {"工资","转账","奖金","投资","其他"};
+                                             // final AlertDialog.Builder builder = new AlertDialog.Builder(BillListActivity.this);
+                                              builder.setTitle("将金额修改为：");
+                                              builder.setItems(items, new DialogInterface.OnClickListener() {
+                                                  @Override
+                                                  public void onClick(DialogInterface dialogInterface, int i) {
+                                                      dialogInterface.dismiss();
+                                                      ContentValues values=new ContentValues();
+                                                      String delete_time;
+                                                      switch (i)
+                                                      {
+                                                          case 0:
+                                                              delete_time=datalist.get(location).get("datetime").toString();
+                                                              datalist.clear();
+                                                              //ContentValues values=new ContentValues();
+                                                              values.put("sort",items[0]);
+                                                              db.update("table_payin",values,"sort=?",new String[]{delete_time});
+                                                              while (cursor.moveToNext()) {
+                                                                  int money = cursor.getInt(0);
+                                                                  String datetime = cursor.getString(1);
+                                                                  String sort = cursor.getString(2);
+                                                                  String introduce= cursor.getString(3);
+                                                                  final Map<String,Object> map;
+                                                                  map=new HashMap<String,Object>();
+                                                                  map.put("money",money);
+                                                                  map.put("datetime",datetime);
+                                                                  map.put("sort",sort);
+                                                                  map.put("introduce",introduce);
+                                                                  datalist.add(map);
+                                                                  simpleAdapter.notifyDataSetChanged();
+                                                              }
+                                                              break;
+                                                          case 1:
+                                                              delete_time=datalist.get(location).get("datetime").toString();
+                                                              datalist.clear();
+                                                              //ContentValues values=new ContentValues();
+                                                              values.put("sort",items[1]);
+                                                              db.update("table_payin",values,"sort=?",new String[]{delete_time});
+                                                              while (cursor.moveToNext()) {
+                                                                  int money = cursor.getInt(0);
+                                                                  String datetime = cursor.getString(1);
+                                                                  String sort = cursor.getString(2);
+                                                                  String introduce= cursor.getString(3);
+                                                                  final Map<String,Object> map;
+                                                                  map=new HashMap<String,Object>();
+                                                                  map.put("money",money);
+                                                                  map.put("datetime",datetime);
+                                                                  map.put("sort",sort);
+                                                                  map.put("introduce",introduce);
+                                                                  datalist.add(map);
+                                                                  simpleAdapter.notifyDataSetChanged();
+                                                              }
+                                                              break;
+                                                          case 2:
+                                                              delete_time=datalist.get(location).get("datetime").toString();
+                                                              datalist.clear();
+                                                              //ContentValues values=new ContentValues();
+                                                              values.put("sort",items[2]);
+                                                              db.update("table_payin",values,"sort=?",new String[]{delete_time});
+                                                              while (cursor.moveToNext()) {
+                                                                  int money = cursor.getInt(0);
+                                                                  String datetime = cursor.getString(1);
+                                                                  String sort = cursor.getString(2);
+                                                                  String introduce= cursor.getString(3);
+                                                                  final Map<String,Object> map;
+                                                                  map=new HashMap<String,Object>();
+                                                                  map.put("money",money);
+                                                                  map.put("datetime",datetime);
+                                                                  map.put("sort",sort);
+                                                                  map.put("introduce",introduce);
+                                                                  datalist.add(map);
+                                                                  simpleAdapter.notifyDataSetChanged();
+                                                              }
+                                                              break;
+                                                          case 3:
+                                                              delete_time=datalist.get(location).get("datetime").toString();
+                                                              datalist.clear();
+                                                              //ContentValues values=new ContentValues();
+                                                              values.put("sort",items[3]);
+                                                              db.update("table_payin",values,"sort=?",new String[]{delete_time});
+                                                              while (cursor.moveToNext()) {
+                                                                  int money = cursor.getInt(0);
+                                                                  String datetime = cursor.getString(1);
+                                                                  String sort = cursor.getString(2);
+                                                                  String introduce= cursor.getString(3);
+                                                                  final Map<String,Object> map;
+                                                                  map=new HashMap<String,Object>();
+                                                                  map.put("money",money);
+                                                                  map.put("datetime",datetime);
+                                                                  map.put("sort",sort);
+                                                                  map.put("introduce",introduce);
+                                                                  datalist.add(map);
+                                                                  simpleAdapter.notifyDataSetChanged();
+                                                              }
+                                                              break;
+                                                          case 4:
+                                                              delete_time=datalist.get(location).get("datetime").toString();
+                                                              datalist.clear();
+                                                              //ContentValues values=new ContentValues();
+                                                              values.put("sort",items[4]);
+                                                              db.update("table_payin",values,"sort=?",new String[]{delete_time});
+                                                              while (cursor.moveToNext()) {
+                                                                  int money = cursor.getInt(0);
+                                                                  String datetime = cursor.getString(1);
+                                                                  String sort = cursor.getString(2);
+                                                                  String introduce= cursor.getString(3);
+                                                                  final Map<String,Object> map;
+                                                                  map=new HashMap<String,Object>();
+                                                                  map.put("money",money);
+                                                                  map.put("datetime",datetime);
+                                                                  map.put("sort",sort);
+                                                                  map.put("introduce",introduce);
+                                                                  datalist.add(map);
+                                                                  simpleAdapter.notifyDataSetChanged();
+                                                              }
+                                                              break;
+                                                      }
+
+                                                  }
+                                              });
+                                              builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                                  @Override public void onClick(DialogInterface dialog, int which)
+                                                  { dialog.cancel(); } });
+                                              builder.create().show();
+                                              break;
+                                          case 3:
+                                              builder.setTitle("将备注修改为：");
+                                              builder.setIcon(R.mipmap.ic_launcher);
+                                              builder.setView(editText);
+                                              builder.setPositiveButton("确定", new DialogInterface.OnClickListener()
+                                              { @Override
+                                              public void onClick(DialogInterface dialog, int which) {
+                                                  //找出当前位置的备注
+                                                  String delete_introduce=datalist.get(location).get("introduce").toString();
+                                                  datalist.clear();
+                                                  ContentValues values=new ContentValues();
+                                                  values.put("introduce",editText.getText().toString());
+                                                  db.update("table_payin",values,"introduce=?",new String[]{delete_introduce});
+                                                  while (cursor.moveToNext()) {
+                                                      int money = cursor.getInt(0);
+                                                      String datetime = cursor.getString(1);
+                                                      String sort = cursor.getString(2);
+                                                      String introduce= cursor.getString(3);
+                                                      final Map<String,Object> map;
+                                                      map=new HashMap<String,Object>();
+                                                      map.put("money",money);
+                                                      map.put("datetime",datetime);
+                                                      map.put("sort",sort);
+                                                      map.put("introduce",introduce);
+                                                      datalist.add(map);
+                                                      simpleAdapter.notifyDataSetChanged();
+                                                  }
+
+                                              } });
+                                              builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                                  @Override public void onClick(DialogInterface dialog, int which)
+                                                  { dialog.cancel(); } });
+                                              builder.create().show();
+                                              break;
+                                      }
+                                  }
+                              });
+
+                              builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                  @Override public void onClick(DialogInterface dialog, int which)
+                                  { dialog.cancel(); } });
+                              builder.create().show();
+
+                      }
+                  });
+
+
+                 ls.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                         @Override
                         public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                             final int location=position;
@@ -264,6 +536,11 @@ public class BillListActivity extends AppCompatActivity {
 
 
     }
+
+
+
+
+
 
 
 
