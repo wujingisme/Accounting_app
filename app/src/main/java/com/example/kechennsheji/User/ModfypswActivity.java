@@ -31,41 +31,26 @@ public class ModfypswActivity extends AppCompatActivity {
             public void onClick(View v) {
                 getEditString();
                 if(TextUtils.isEmpty(original_psw))
-                {
-                    Toast.makeText(ModfypswActivity.this,"请输入原始密码",Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                { Toast.makeText(ModfypswActivity.this,"请输入原始密码",Toast.LENGTH_SHORT).show();
+                    return; }
                 else if(!MD5Utils.MD5(original_psw).equals(readPsw()))
-                {
-
-                    Toast.makeText(ModfypswActivity.this,"输入的密码与原始密码不一致",Toast.LENGTH_SHORT).show();
+                { Toast.makeText(ModfypswActivity.this,"输入的密码与原始密码不一致",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else if(TextUtils.isEmpty(new_psw))
-                {
-                    Toast.makeText(ModfypswActivity.this,"请输入要更改的密码",Toast.LENGTH_SHORT).show();
+                { Toast.makeText(ModfypswActivity.this,"请输入要更改的密码",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else if(TextUtils.isEmpty(psw_again))
-                {
-                    Toast.makeText(ModfypswActivity.this,"请再次输入密码",Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                { Toast.makeText(ModfypswActivity.this,"请再次输入密码",Toast.LENGTH_SHORT).show();
+                    return; }
                 else if(!new_psw.equals((psw_again)))
-                {
-                    Toast.makeText(ModfypswActivity.this,"两次输入的密码不一致！",Toast.LENGTH_SHORT).show();
+                { Toast.makeText(ModfypswActivity.this,"两次输入的密码不一致！",Toast.LENGTH_SHORT).show();
                 }
-                else{
-
-                    Toast.makeText(ModfypswActivity.this,"新密码设置成功！",Toast.LENGTH_SHORT).show();
-                    Log.d(TAG,MD5Utils.MD5(new_psw));
-                    Log.d(TAG,readPsw());
+                else{ Toast.makeText(ModfypswActivity.this,"新密码设置成功！",Toast.LENGTH_SHORT).show();;
                     modifyPsw(new_psw);
                     Intent intent=new Intent(ModfypswActivity.this,LogInActivity.class);
-                    startActivity(intent);
-
-
-                }
+                    startActivity(intent); }
 
             }
         });

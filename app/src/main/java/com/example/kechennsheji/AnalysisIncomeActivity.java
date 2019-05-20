@@ -37,7 +37,7 @@ public class AnalysisIncomeActivity extends AppCompatActivity {
     private TextView tv_gongzhi,tv_zhuanzhuang,tv_jiangjin,tv_touzhi,tv_qita,tv_income;
     private PieChart mChart;
     private final String TAG="Piechart";
-    private String[] x = new String[] { "工资", "转账", "奖金","投资","其他" };
+    private String[] x = new String[] { "兼职", "转账", "奖金","投资","其他" };
     private float m_gongzhi,m_zhuanzhuang,m_jiangjin,m_touzhi,m_qita,total;
     private float m_gongzhi2,m_zhuanzhuang2,m_jiangjin2,m_touzhi2,m_qita2;
 
@@ -82,14 +82,11 @@ public class AnalysisIncomeActivity extends AppCompatActivity {
                 Log.d(TAG,start_date);
                 helperPayin=new DatabaseHelperPayin(AnalysisIncomeActivity.this,"table_payin",null,1);
                 SQLiteDatabase db=helperPayin.getReadableDatabase();
-
                 Cursor cursor_gongzhi=db.rawQuery("select sum(money) from table_payin where sort=?" +
-                        " and datetime between ? and ?",new String []{"工资",start_date,end_date});
+                        " and datetime between ? and ?",new String []{"兼职",start_date,end_date});
                 if (cursor_gongzhi.moveToFirst())
-                { do
-                { m_gongzhi=cursor_gongzhi.getInt(0); }
-                while (cursor_gongzhi.moveToNext());
-                }
+                { do { m_gongzhi=cursor_gongzhi.getInt(0); }
+                while (cursor_gongzhi.moveToNext()); }
                 m_gongzhi2=m_gongzhi;
                 cursor_gongzhi.close();
                 // Log.d(TAG,String.valueOf(m_gongzhi));
@@ -97,8 +94,7 @@ public class AnalysisIncomeActivity extends AppCompatActivity {
                         " and datetime between ? and ?",new String []{"转账",start_date,end_date});
                 if (cursor_zhuanzhuang.moveToFirst())
                 { do
-                {
-                    m_zhuanzhuang=cursor_zhuanzhuang.getInt(0); }
+                { m_zhuanzhuang=cursor_zhuanzhuang.getInt(0); }
                 while (cursor_zhuanzhuang.moveToNext());
                 }m_zhuanzhuang2=m_zhuanzhuang;
                 cursor_zhuanzhuang.close();
@@ -158,7 +154,7 @@ public class AnalysisIncomeActivity extends AppCompatActivity {
         helperPayin=new DatabaseHelperPayin(AnalysisIncomeActivity.this,"table_payin",null,1);
         SQLiteDatabase db=helperPayin.getReadableDatabase();
 
-        Cursor cursor_gongzhi=db.rawQuery("select sum(money) from table_payin where sort=?",new String []{"工资"});
+        Cursor cursor_gongzhi=db.rawQuery("select sum(money) from table_payin where sort=?",new String []{"兼职"});
         if (cursor_gongzhi.moveToFirst())
         { do
         { m_gongzhi=cursor_gongzhi.getInt(0); }
@@ -219,9 +215,9 @@ public class AnalysisIncomeActivity extends AppCompatActivity {
         tv_touzhi=findViewById(R.id.total_touzhi2);
         tv_zhuanzhuang=findViewById(R.id.total_zhuanzhuang2);
         tv_qita=findViewById(R.id.total_qita2);
-
         date1 = findViewById(R.id.Et_date1);
         date2 = findViewById(R.id.Et_date2);
+
         tv_income.setText(String.valueOf(m_gongzhi+m_zhuanzhuang+m_jiangjin+m_touzhi+m_qita)+" 元");
         tv_gongzhi.setText(String.valueOf(m_gongzhi2)+" 元");
         tv_zhuanzhuang.setText(String.valueOf((m_zhuanzhuang2))+" 元");

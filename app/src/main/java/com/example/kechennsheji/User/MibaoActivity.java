@@ -38,23 +38,12 @@ public class MibaoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 s_id=username1.getText().toString().trim();
                 if(TextUtils.isEmpty(s_id))
-                {
-
-                    Toast.makeText(MibaoActivity.this,"请输入要设置的密保信息！",Toast.LENGTH_LONG).show();
-                }
+                { Toast.makeText(MibaoActivity.this,"请输入要设置的密保信息！",Toast.LENGTH_LONG).show(); }
                else if(s_id.length()!=6)
-                {
-
-                    Toast.makeText(MibaoActivity.this,"请输入正确的密保信息！",Toast.LENGTH_LONG).show();
-                }
-                else
-                {
-                  saveMibaoInfo(spUsername,s_id);
-
-                }
-            }
-        });
-    }
+                { Toast.makeText(MibaoActivity.this,"请输入正确的密保信息！",Toast.LENGTH_LONG).show();
+                } else
+                { saveMibaoInfo(spUsername,s_id);
+                } }}); }
     //获取用户密保信息
     public void saveMibaoInfo(String spUsername,String s_id)
     {

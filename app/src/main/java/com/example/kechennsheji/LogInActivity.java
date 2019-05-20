@@ -72,7 +72,6 @@ public class LogInActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         mBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,12 +79,8 @@ public class LogInActivity extends AppCompatActivity {
                 psw=mEt_password.getText().toString().trim();
                 String MD5psw=MD5Utils.MD5(psw);
                 spPsw=readPsw(userName);
-
-
-               // startActivity(new Intent(LogInActivity.this,MainPayoutActivity.class));
               if(isMobileNum(userName))
-                {
-                    if (TextUtils.isEmpty(userName)) {
+                { if (TextUtils.isEmpty(userName)) {
                         Toast.makeText(LogInActivity.this, "请输入手机号", Toast.LENGTH_SHORT).show();
                         return;
                     } else if (TextUtils.isEmpty(psw)) {
@@ -101,16 +96,10 @@ public class LogInActivity extends AppCompatActivity {
                         LogInActivity.this.finish();
                         return;
                     } else if ((spPsw!=null&&!TextUtils.isEmpty(spPsw)&&!MD5psw.equals(spPsw)))
-                    {
-                        Toast.makeText(LogInActivity.this,"输入的密码和用户名不一致！",Toast.LENGTH_SHORT).show();
+                    { Toast.makeText(LogInActivity.this,"输入的密码和用户名不一致！",Toast.LENGTH_SHORT).show();
                         return;
-                    }else
-                    {
-                        Toast.makeText(LogInActivity.this,"此用户名不存在！",Toast.LENGTH_SHORT).show();
-                    }
-                    }else
-                        {
-                            Toast.makeText(LogInActivity.this,"您输入的手机号有误！",Toast.LENGTH_SHORT).show();
+                    }else { Toast.makeText(LogInActivity.this,"此用户名不存在！",Toast.LENGTH_SHORT).show(); }
+                    }else { Toast.makeText(LogInActivity.this,"您输入的手机号有误！",Toast.LENGTH_SHORT).show();
                         }
             }
         });

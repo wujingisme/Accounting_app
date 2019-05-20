@@ -97,6 +97,7 @@
             android:layout_width="70dp"
             android:layout_height="35dp"
             android:text="用户中心"
+            android:gravity="center"
             android:textSize="10dp"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="20dp"

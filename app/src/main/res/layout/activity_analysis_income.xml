@@ -58,7 +58,7 @@
         android:layout_width="200dp"
         android:layout_height="60dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="55dp"
         android:background="@drawable/bg_zhichu"
         android:padding="8dp"
         android:orientation="horizontal">
@@ -86,10 +86,10 @@
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pie_chart"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="250dp"
         android:layout_below="@+id/Rg_1"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="15dp" />
     <RelativeLayout
         android:id="@+id/R1"
         android:layout_above="@id/R2"
@@ -105,7 +105,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginBottom="0dp"
             android:gravity="center"
-            android:text="工资收入"
+            android:text="兼职收入"
             android:textColor="#ffff"
             android:textSize="12dp" />
         <TextView

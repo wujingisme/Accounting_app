@@ -105,7 +105,7 @@ public class MainPayinActivity extends AppCompatActivity{
                 //builder.setIcon(R.drawable.ic_launcher);
                 builder.setTitle("选择类别");
                 //    指定下拉列表的显示数据
-                final String[] sort = { "工资", "转账", "奖金","投资","其他"};
+                final String[] sort = { "兼职", "转账", "奖金","投资","其他"};
                 //    设置一个下拉的列表选择项
                 builder.setItems(sort, new DialogInterface.OnClickListener()
                 {

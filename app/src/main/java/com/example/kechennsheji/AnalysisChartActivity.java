@@ -50,7 +50,7 @@ public class AnalysisChartActivity extends AppCompatActivity {
     private TextView tv_expense,tv_jiaotong,tv_zhufang,tv_yilioa,tv_yule,tv_shenghuoyongp,tv_jiaoyu,tv_qita;
     private PieChart mChart;
     private final String TAG="Piechart";
-    private String[] x = new String[] { "交通", "住房", "医疗","娱乐","教育","生活用品","其他" };
+    private String[] x = new String[] { "交通", "吃饭", "医疗","娱乐","教育","生活用品","其他" };
     private float m_jiaotong,m_zhufang,m_yiliao,m_yule,m_jiaoyu,m_shenghuoyongping,m_qita,total;
     private float m_jiaotong2,m_zhufang2,m_yiliao2,m_yule2,m_jiaoyu2,m_shenghuoyongping2,m_qita2;
 
@@ -92,19 +92,14 @@ public class AnalysisChartActivity extends AppCompatActivity {
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String start_date=date1.getText().toString();
                 String end_date=date2.getText().toString();
-                Log.d(TAG,start_date);
-
                 helper_out=new DatabaseHelper(AnalysisChartActivity.this,"table_payout",null,1);
                 SQLiteDatabase db=helper_out.getReadableDatabase();
-                // Cursor cursor_jiaotong=db.rawQuery("select sum(money) from table_payout where sort=?",new String []{"交通"});
                 Cursor cursor_jiaotong=db.rawQuery("select sum(money) from table_payout where sort=?" +
                         " and datetime between ? and ?",new String []{"交通",start_date,end_date});
                 Cursor cursor_zhufang=db.rawQuery("select sum(money) from table_payout where sort=?" +
-                        " and datetime between ? and ?",new String []{"住房",start_date,end_date});
-
+                        " and datetime between ? and ?",new String []{"吃饭",start_date,end_date});
                 Cursor cursor_yiliao=db.rawQuery("select sum(money) from table_payout where sort=?" +
                         " and datetime between ? and ?",new String []{"医疗",start_date,end_date});
                 Cursor cursor_yule=db.rawQuery("select sum(money) from table_payout where sort=?" +
@@ -115,57 +110,38 @@ public class AnalysisChartActivity extends AppCompatActivity {
                         " and datetime between ? and ?",new String []{"生活用品",start_date,end_date});
                 Cursor cursor_qita=db.rawQuery("select sum(money) from table_payout where sort=?" +
                         " and datetime between ? and ?",new String []{"其他",start_date,end_date});
-
                 if (cursor_jiaotong.moveToFirst())
-                { do
-                { m_jiaotong=cursor_jiaotong.getInt(0); }
-                while (cursor_jiaotong.moveToNext());
-
+                { do { m_jiaotong=cursor_jiaotong.getInt(0);
+                } while (cursor_jiaotong.moveToNext());
                 } m_jiaotong2=m_jiaotong;
                 cursor_jiaotong.close();
-
                 if (cursor_zhufang.moveToFirst())
-                { do
-                {
-                    m_zhufang=cursor_zhufang.getInt(0); }
-                while (cursor_zhufang.moveToNext());
+                { do { m_zhufang=cursor_zhufang.getInt(0); }
+                    while (cursor_zhufang.moveToNext());
                 }m_zhufang2=m_zhufang;
                 cursor_zhufang.close();
                 if(cursor_yiliao.moveToFirst())
-                {
-                    do{
-                        m_yiliao=cursor_yiliao.getInt(0);
+                { do{ m_yiliao=cursor_yiliao.getInt(0);
                     }while (cursor_yiliao.moveToNext());
                 }m_yiliao2=m_yiliao;
                 cursor_yiliao.close();
                 if(cursor_yule.moveToFirst())
-                {
-                    do {
-                        m_yule=cursor_yule.getInt(0);
-
+                { do { m_yule=cursor_yule.getInt(0);
                     }while (cursor_yule.moveToNext()) ;
                 }m_yule2=m_yule;
                 cursor_yule.close();
                 if(cursor_jiaoyu.moveToFirst())
-                {
-                    do {
-                        m_jiaoyu=cursor_jiaoyu.getInt(0);
-
+                { do { m_jiaoyu=cursor_jiaoyu.getInt(0);
                     }while (cursor_jiaoyu.moveToNext()) ;
                 }m_jiaoyu2=m_jiaoyu;
                 cursor_jiaoyu.close();
                 if(cursor_shenghuoyongp.moveToFirst())
-                {
-                    do{
-                        m_shenghuoyongping=cursor_shenghuoyongp.getInt(0);
+                { do{ m_shenghuoyongping=cursor_shenghuoyongp.getInt(0);
                     }while (cursor_shenghuoyongp.moveToNext());
                 }m_shenghuoyongping2=m_shenghuoyongping;
                 cursor_shenghuoyongp.close();
                 if(cursor_qita.moveToFirst())
-                {
-                    do {
-                        m_qita=cursor_qita.getInt(0);
-
+                { do { m_qita=cursor_qita.getInt(0);
                     }while (cursor_qita.moveToNext()) ;
                 }m_qita2=m_qita;
                 cursor_qita.close();
@@ -193,7 +169,7 @@ public class AnalysisChartActivity extends AppCompatActivity {
         SQLiteDatabase db=helper_out.getReadableDatabase();
         // Cursor cursor_jiaotong=db.rawQuery("select sum(money) from table_payout where sort=?",new String []{"交通"});
         Cursor cursor_jiaotong=db.rawQuery("select sum(money) from table_payout where sort=?",new String []{"交通"});
-        Cursor cursor_zhufang=db.rawQuery("select sum(money) from table_payout where sort=?",new String []{"住房"});
+        Cursor cursor_zhufang=db.rawQuery("select sum(money) from table_payout where sort=?",new String []{"吃饭"});
         Cursor cursor_yiliao=db.rawQuery("select sum(money) from table_payout where sort=?",new String []{"医疗"});
         Cursor cursor_yule=db.rawQuery("select sum(money) from table_payout where sort=?",new String []{"娱乐"});
         Cursor cursor_jiaoyu=db.rawQuery("select sum(money) from table_payout where sort=?",new String []{"教育"});

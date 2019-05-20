@@ -35,6 +35,9 @@
             android:name=".AnalysisChartActivity"
             android:label="分析报告" />
         <activity
+            android:name=".AnalysisIncomeActivity"
+            android:label="分析报告" />
+        <activity
             android:name=".User.UserActivity"
             android:label="用户中心" />
         <activity
@@ -47,15 +50,8 @@
             android:name=".User.SettingActivity"
             android:label="设置" />
         <activity
-            android:name=".MgPayoutsortActivity"
-            android:label="选择类别" />
-        <activity
             android:name=".MainPayinActivity"
             android:label="收入来源" />
-        <activity
-            android:name=".MgPayinsortActivity"
-            android:label="收入类别" />
-        <activity android:name=".AnalysisIncomeActivity" />
         <activity
             android:name=".User.ModfypswActivity"
             android:label="修改密码" />

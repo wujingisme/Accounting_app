@@ -49,12 +49,10 @@ private final static String TAG="insert";
         mBtn_confin=findViewById(R.id.confin);
         mBtn_confin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //int S_money= Integer.parseInt(mEt_Money.getText().toString());
                 String S_money=(mEt_Money.getText().toString());
                 String S_calander=mEt_calander.getText().toString();
                 String S_sort=mEt_Sort.getText().toString();
                 String S_introduce=mEt_Introduce.getText().toString();
-
                 if(TextUtils.isEmpty(S_money))
                 {
                     Toast.makeText(MainPayoutActivity.this,"请你添加收入金额",Toast.LENGTH_SHORT).show();
@@ -100,7 +98,7 @@ private final static String TAG="insert";
                 //builder.setIcon(R.drawable.ic_launcher);
                 builder.setTitle("选择类别");
                 //    指定下拉列表的显示数据
-                final String[] sort = {"交通", "住房", "医疗","娱乐","教育","生活用品","其他"};
+                final String[] sort = {"交通", "吃饭", "医疗","娱乐","教育","生活用品","其他"};
                 //    设置一个下拉的列表选择项
                 builder.setItems(sort, new DialogInterface.OnClickListener()
                 {

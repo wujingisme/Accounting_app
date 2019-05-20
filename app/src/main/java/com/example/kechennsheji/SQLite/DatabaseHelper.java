@@ -8,14 +8,9 @@ import android.util.Log;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private  final static String TAG="database";
 
-    //Constant constant=new Constant(context);
     public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, Constant.DBPayoutname, null,Constant.version);
-
-        //super(context,constant.getname(), null,Constant.version);
     }
-
-
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG,"创建数据库");
@@ -25,7 +20,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
 
    /*     String sql;
         switch (oldVersion)

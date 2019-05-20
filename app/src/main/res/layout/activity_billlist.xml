@@ -15,7 +15,7 @@
         android:orientation="horizontal"
         android:background="#006699">
         <TextView
-            android:layout_width="12dp"
+            android:layout_width="14dp"
             android:layout_height="match_parent"
             android:text="时间"
             android:textColor="#ffffff"
@@ -30,8 +30,8 @@
             android:text=""
             android:textColor="#ffffff" />
         <TextView
-            android:layout_width="12dp"
-            android:layout_height="20dp"
+            android:layout_width="14dp"
+            android:layout_height="22dp"
             android:text="至"
             android:paddingBottom="5dp"
             android:textColor="#ffffff"
@@ -62,7 +62,7 @@
         android:layout_below="@id/Ll_date1">
         <TextView
             android:id="@+id/_shouzhi"
-            android:layout_width="65dp"
+            android:layout_width="55dp"
             android:layout_height="match_parent"
             android:layout_marginRight="15dp"
             android:text="金额"
@@ -72,7 +72,7 @@
             android:id="@+id/_sort"
             android:layout_width="65dp"
             android:layout_height="match_parent"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="15dp"
             android:text="类别"
             android:gravity="center"
             android:textColor="#ffff"/>
@@ -80,7 +80,7 @@
             android:id="@+id/_jiner"
             android:layout_width="65dp"
             android:layout_height="match_parent"
-            android:layout_marginRight="15dp"
+            android:layout_marginRight="5dp"
             android:text="日期"
             android:gravity="center"
             android:textColor="#ffff"/>
@@ -94,7 +94,7 @@
             android:textColor="#ffff"/>
         <Button
             android:id="@+id/zhichuorsouru"
-            android:layout_width="80dp"
+            android:layout_width="75dp"
             android:layout_height="match_parent"
             android:layout_marginRight="10dp"
             android:text="收入/支出"

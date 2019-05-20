@@ -12,6 +12,7 @@ public class Constant {
     public static final String DBPayoutname = "DBpayout.db";
     public static final String DBPayinname = "DBpayin.db";
     //SharedPreferences preference = BaseApplication.getInstance().getSharedPreferences("token",Context.MODE_PRIVATE);
+   // SharedPreferences preference = getSharedPreferences("token",Context.MODE_PRIVATE);
     /*SharedPreferences sp;
     public Constant(Context context){
         sp=context.getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);

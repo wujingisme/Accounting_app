@@ -10,9 +10,11 @@
         import android.database.sqlite.SQLiteDatabase;
         import android.support.v7.app.AppCompatActivity;
         import android.os.Bundle;
+        import android.text.InputType;
         import android.util.Log;
         import android.view.KeyEvent;
         import android.view.View;
+        import android.view.inputmethod.EditorInfo;
         import android.widget.AdapterView;
         import android.widget.Button;
         import android.widget.CursorAdapter;
@@ -78,14 +80,13 @@ public class BillListActivity extends AppCompatActivity {
         helper=new DatabaseHelperPayin(BillListActivity.this,"table_payin",null,1);
         db=helper.getReadableDatabase();
         db.delete("table_payin","sort=?",new String[]{""});
+        db.delete("table_payin","money=?",new String[]{""});
         ls=findViewById(R.id.List_1);
 
         simpleAdapter=new SimpleAdapter(BillListActivity.this,datalist,R.layout.item_list,dataKeyArr,itemIdArr);
         ls.setAdapter(simpleAdapter);
 
-        QTotal_expense();
-        QTotal_income();
-        QTotal_left();
+
 
         zhichu_shouru.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +118,7 @@ public class BillListActivity extends AppCompatActivity {
                         datalist.add(map);
 
                     }
-                    //点击修改数据内容
+                    //点击修改收入数据内容
                   ls.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                       @Override
                       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -136,7 +137,6 @@ public class BillListActivity extends AppCompatActivity {
                                       final Cursor cursor;
                                       cursor = db.query("table_payin", null, null, null, null,null, null);
                                       final EditText editText = new EditText(BillListActivity.this);
-
                                       final AlertDialog.Builder builder = new AlertDialog.Builder(BillListActivity.this);
                                       switch (i){
                                           case 0:
@@ -146,12 +146,13 @@ public class BillListActivity extends AppCompatActivity {
                                               builder.setPositiveButton("确定", new DialogInterface.OnClickListener()
                                               { @Override
                                               public void onClick(DialogInterface dialog, int which) {
-                                                  //找出当前位置的金额
-                                                  String delete_money=datalist.get(location).get("money").toString();
+                                                   String delete_sort=datalist.get(location).get("sort").toString();
+                                                  String delete_date=datalist.get(location).get("datetime").toString();
                                                   datalist.clear();
+                                                  editText.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
                                                   ContentValues values=new ContentValues();
                                                   values.put("money",editText.getText().toString());
-                                                  db.update("table_payin",values,"money=?",new String[]{delete_money});
+                                                  db.update("table_payin",values, "datetime=? and sort=?",new String[]{delete_sort,delete_date});
                                                   while (cursor.moveToNext()) {
                                                       int money = cursor.getInt(0);
                                                       String datetime = cursor.getString(1);
@@ -165,7 +166,11 @@ public class BillListActivity extends AppCompatActivity {
                                                       map.put("introduce",introduce);
                                                       datalist.add(map);
                                                       simpleAdapter.notifyDataSetChanged();
-
+                                                      QTotal_expense();
+                                                      QTotal_income();
+                                                      QTotal_left();
+                                                      income.setText(":"+String.valueOf(sum_income)+" 元");
+                                                      expense.setText(":"+String.valueOf(sum_expense)+" 元");
                                                   }
 
 
@@ -183,11 +188,14 @@ public class BillListActivity extends AppCompatActivity {
                                               { @Override
                                               public void onClick(DialogInterface dialog, int which) {
                                                   //找出当前位置的日期
+                                                  String delete_money=datalist.get(location).get("money").toString();
                                                   String delete_sort=datalist.get(location).get("sort").toString();
+                                                  String delete_date=datalist.get(location).get("datetime").toString();
                                                   datalist.clear();
                                                   ContentValues values=new ContentValues();
+                                                  editText.setInputType(InputType.TYPE_CLASS_DATETIME);
                                                   values.put("datetime",editText.getText().toString());
-                                                  db.update("table_payin",values,"datetime=?",new String[]{delete_sort});
+                                                  db.update("table_payin",values,"datetime=? and money=? and sort=?",new String[]{delete_sort,delete_money,delete_date});
                                                   while (cursor.moveToNext()) {
                                                       int money = cursor.getInt(0);
                                                       String datetime = cursor.getString(1);
@@ -210,23 +218,27 @@ public class BillListActivity extends AppCompatActivity {
                                               builder.create().show();
                                               break;
                                           case 2:
-                                              final String[] items = {"工资","转账","奖金","投资","其他"};
+                                              final String[] items = {"兼职","转账","奖金","投资","其他"};
                                              // final AlertDialog.Builder builder = new AlertDialog.Builder(BillListActivity.this);
-                                              builder.setTitle("将金额修改为：");
+                                              builder.setTitle("将收入类别修改为：");
                                               builder.setItems(items, new DialogInterface.OnClickListener() {
                                                   @Override
                                                   public void onClick(DialogInterface dialogInterface, int i) {
                                                       dialogInterface.dismiss();
                                                       ContentValues values=new ContentValues();
                                                       String delete_time;
+                                                      String delete_money;
+                                                      String delete_sort;
                                                       switch (i)
                                                       {
                                                           case 0:
+                                                              delete_money=datalist.get(location).get("money").toString();
+                                                              delete_sort=datalist.get(location).get("sort").toString();
                                                               delete_time=datalist.get(location).get("datetime").toString();
                                                               datalist.clear();
                                                               //ContentValues values=new ContentValues();
                                                               values.put("sort",items[0]);
-                                                              db.update("table_payin",values,"sort=?",new String[]{delete_time});
+                                                              db.update("table_payin",values,"sort=? and money=? and datetime=?",new String[]{delete_time,delete_money,delete_sort});
                                                               while (cursor.moveToNext()) {
                                                                   int money = cursor.getInt(0);
                                                                   String datetime = cursor.getString(1);
@@ -243,11 +255,13 @@ public class BillListActivity extends AppCompatActivity {
                                                               }
                                                               break;
                                                           case 1:
-                                                              delete_time=datalist.get(location).get("datetime").toString();
+                                                               delete_money=datalist.get(location).get("money").toString();
+                                                               delete_sort=datalist.get(location).get("sort").toString();
+                                                               delete_time=datalist.get(location).get("datetime").toString();
                                                               datalist.clear();
                                                               //ContentValues values=new ContentValues();
                                                               values.put("sort",items[1]);
-                                                              db.update("table_payin",values,"sort=?",new String[]{delete_time});
+                                                              db.update("table_payin",values,"sort=? and money=? and datetime=?",new String[]{delete_time,delete_money,delete_sort});
                                                               while (cursor.moveToNext()) {
                                                                   int money = cursor.getInt(0);
                                                                   String datetime = cursor.getString(1);
@@ -264,11 +278,13 @@ public class BillListActivity extends AppCompatActivity {
                                                               }
                                                               break;
                                                           case 2:
+                                                              delete_money=datalist.get(location).get("money").toString();
+                                                              delete_sort=datalist.get(location).get("sort").toString();
                                                               delete_time=datalist.get(location).get("datetime").toString();
                                                               datalist.clear();
                                                               //ContentValues values=new ContentValues();
                                                               values.put("sort",items[2]);
-                                                              db.update("table_payin",values,"sort=?",new String[]{delete_time});
+                                                              db.update("table_payin",values,"sort=? and money=? and datetime=?",new String[]{delete_time,delete_money,delete_sort});
                                                               while (cursor.moveToNext()) {
                                                                   int money = cursor.getInt(0);
                                                                   String datetime = cursor.getString(1);
@@ -285,11 +301,13 @@ public class BillListActivity extends AppCompatActivity {
                                                               }
                                                               break;
                                                           case 3:
+                                                              delete_money=datalist.get(location).get("money").toString();
+                                                              delete_sort=datalist.get(location).get("sort").toString();
                                                               delete_time=datalist.get(location).get("datetime").toString();
                                                               datalist.clear();
                                                               //ContentValues values=new ContentValues();
                                                               values.put("sort",items[3]);
-                                                              db.update("table_payin",values,"sort=?",new String[]{delete_time});
+                                                              db.update("table_payin",values,"sort=? and money=? and datetime=?",new String[]{delete_time,delete_money,delete_sort});
                                                               while (cursor.moveToNext()) {
                                                                   int money = cursor.getInt(0);
                                                                   String datetime = cursor.getString(1);
@@ -306,11 +324,13 @@ public class BillListActivity extends AppCompatActivity {
                                                               }
                                                               break;
                                                           case 4:
+                                                              delete_money=datalist.get(location).get("money").toString();
+                                                              delete_sort=datalist.get(location).get("sort").toString();
                                                               delete_time=datalist.get(location).get("datetime").toString();
                                                               datalist.clear();
                                                               //ContentValues values=new ContentValues();
                                                               values.put("sort",items[4]);
-                                                              db.update("table_payin",values,"sort=?",new String[]{delete_time});
+                                                              db.update("table_payin",values,"sort=? and money=? and datetime=?",new String[]{delete_time,delete_money,delete_sort});
                                                               while (cursor.moveToNext()) {
                                                                   int money = cursor.getInt(0);
                                                                   String datetime = cursor.getString(1);
@@ -344,10 +364,12 @@ public class BillListActivity extends AppCompatActivity {
                                               public void onClick(DialogInterface dialog, int which) {
                                                   //找出当前位置的备注
                                                   String delete_introduce=datalist.get(location).get("introduce").toString();
+                                                   String delete_money=datalist.get(location).get("money").toString();
+                                                  String delete_sort=datalist.get(location).get("sort").toString();
                                                   datalist.clear();
                                                   ContentValues values=new ContentValues();
                                                   values.put("introduce",editText.getText().toString());
-                                                  db.update("table_payin",values,"introduce=?",new String[]{delete_introduce});
+                                                  db.update("table_payin",values,"introduce=? and money=? and datetime=?",new String[]{delete_introduce,delete_money,delete_sort});
                                                   while (cursor.moveToNext()) {
                                                       int money = cursor.getInt(0);
                                                       String datetime = cursor.getString(1);
@@ -394,25 +416,28 @@ public class BillListActivity extends AppCompatActivity {
                                     .setPositiveButton("是", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            helper=new DatabaseHelperPayin(BillListActivity.this,"table_payin",null,1);
-                                            SQLiteDatabase db=helper.getReadableDatabase();
-                                            Cursor cursor;
-                                            cursor = db.query("table_payin", null, null, null, null, null,null);
-                                            String delete_money=datalist.get(location).get("money").toString();
-                                            String delete_date=datalist.get(location).get("datetime").toString();
-                                            String delete_sort=datalist.get(location).get("sort").toString();
-                                            while (cursor.moveToNext()) {
+                                          helper=new DatabaseHelperPayin(BillListActivity.this,"table_payin",null,1);
+                                          SQLiteDatabase db=helper.getReadableDatabase();
+                                          Cursor cursor;
+                                          cursor = db.query("table_payin", null, null, null, null, null,null);
+                                          String delete_money=datalist.get(location).get("money").toString();
+                                          String delete_date=datalist.get(location).get("datetime").toString();
+                                          String delete_sort=datalist.get(location).get("sort").toString();
+                                          while (cursor.moveToNext()) {
+                                           int money = cursor.getInt(0);
+                                           String datetime=cursor.getString(1);
+                                           String sort=cursor.getString(2);
+                                           if( String.valueOf(money).equals(delete_money)&&datetime.equals(delete_date)&&sort.equals(delete_sort))
+                                           {   db.delete("table_payin","datetime=? and money=? and sort=?",new String[]{delete_sort,delete_money,delete_date});
+                                               db.close();
+                                               datalist.remove(location);
+                                               simpleAdapter.notifyDataSetChanged();
+                                                    QTotal_expense();
+                                                    QTotal_income();
+                                                    QTotal_left();
+                                                    income.setText(":"+String.valueOf(sum_income)+" 元");
+                                                    expense.setText(":"+String.valueOf(sum_expense)+" 元");
 
-                                                int money = cursor.getInt(0);
-                                                String datetime=cursor.getString(1);
-                                                String sort=cursor.getString(2);
-                                                if( String.valueOf(money).equals(delete_money)&&datetime.equals(delete_date)&&sort.equals(delete_sort))
-                                                {
-                                                    db.delete("table_payin","datetime=? and money=?",new String[]{delete_sort,delete_money});
-                                                    db.close();
-                                                    Log.d(TAG,String.valueOf(delete_money));
-                                                    datalist.remove(location);
-                                                    simpleAdapter.notifyDataSetChanged();
                                                 }
 
                                             }
@@ -425,7 +450,11 @@ public class BillListActivity extends AppCompatActivity {
                             return true;
                         }
                     });
-
+                    QTotal_expense();
+                    QTotal_income();
+                    QTotal_left();
+                    income.setText(":"+String.valueOf(sum_income)+" 元");
+                    expense.setText(":"+String.valueOf(sum_expense)+" 元");
 
                     tv_money_income_Onclick();
                     tv_date_income_Onclick();
@@ -433,17 +462,15 @@ public class BillListActivity extends AppCompatActivity {
                     income_search_onclick();
                     zhichu_shouru.setText("当前为收入");
                     flag=false;
-                    income.setText(":"+String.valueOf(sum_income)+"元");
+                    //income.setText(":"+String.valueOf(sum_income)+" 元");
 
                 }
                 else{
 
-                    // Log.d(TAG, String.valueOf(sum));
                     datalist.clear();
                     helper_out=new DatabaseHelper(BillListActivity.this,"table_payout",null,1);
                     SQLiteDatabase db=helper_out.getReadableDatabase();
-                    db.delete("table_payout","datetime=?",new String[]{""});
-                    db.delete("table_payout","sort=?",new String[]{""});
+                    db.delete("table_payout","money=?",new String[]{""});
                     Cursor cursor;
                     cursor = db.query("table_payout", null, null, null, null, null, "money desc");
                     while (cursor.moveToNext()) {
@@ -491,11 +518,17 @@ public class BillListActivity extends AppCompatActivity {
                                                 String sort=cursor.getString(2);
                                                 if( String.valueOf(money).equals(delete_money)&&datetime.equals(delete_date)&&sort.equals(delete_sort))
                                                 {
-                                                    db.delete("table_payout","datetime=? and money=?",new String[]{delete_sort,delete_money});
+                                                    db.delete("table_payout","datetime=? and money=? and sort=?",new String[]{delete_sort,delete_money,delete_date});
                                                     db.close();
                                                     Log.d(TAG,String.valueOf(delete_money));
                                                     datalist.remove(location);
                                                     simpleAdapter.notifyDataSetChanged();
+                                                    QTotal_expense();
+                                                    QTotal_income();
+                                                    QTotal_left();
+                                                    income.setText(":"+String.valueOf(sum_income)+" 元");
+                                                    expense.setText(":"+String.valueOf(sum_expense)+" 元");
+
                                                 }
 
                                             }
@@ -508,13 +541,355 @@ public class BillListActivity extends AppCompatActivity {
                             return true;
                         }
                     });
+                    //点击修改支出数据内容
+                    ls.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            final int location=position;
+                            final String[] items = {"金额","日期(格式为YY-MM-DD)","分类","备注"};
+                            final AlertDialog.Builder builder = new AlertDialog.Builder(BillListActivity.this);
+                            builder .setTitle("你想修改这条数据什么内容？");
+                            builder.setItems(items, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                    simpleAdapter=new SimpleAdapter(BillListActivity.this,datalist,R.layout.item_list,dataKeyArr,itemIdArr);
+                                    ls.setAdapter(simpleAdapter);
+                                    helper_out=new DatabaseHelper(BillListActivity.this,"table_payout",null,1);
+                                    final  SQLiteDatabase db=helper_out.getReadableDatabase();
+                                    final Cursor cursor;
+                                    cursor = db.query("table_payout", null, null, null, null,null, null);
+                                    final EditText editText = new EditText(BillListActivity.this);
+
+                                    final AlertDialog.Builder builder = new AlertDialog.Builder(BillListActivity.this);
+                                    switch (i){
+                                        case 0:
+                                            builder.setTitle("将金额修改为：");
+                                            builder.setIcon(R.mipmap.ic_launcher);
+                                            builder.setView(editText);
+                                            builder.setPositiveButton("确定", new DialogInterface.OnClickListener()
+                                            { @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                //找出当前位置的金额
+                                                 String delete_money=datalist.get(location).get("money").toString();
+                                                 String delete_sort=datalist.get(location).get("sort").toString();
+                                                String delete_time=datalist.get(location).get("datetime").toString();
+                                                 editText.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
+                                                datalist.clear();
+                                                ContentValues values=new ContentValues();
+                                                values.put("money",editText.getText().toString());
+                                                db.update("table_payout",values,"datetime=? and sort=?",new String[]{delete_sort,delete_time});
+                                                while (cursor.moveToNext()) {
+                                                    int money = cursor.getInt(0);
+                                                    String datetime = cursor.getString(1);
+                                                    String sort = cursor.getString(2);
+                                                    String introduce= cursor.getString(3);
+                                                    final Map<String,Object> map;
+                                                    map=new HashMap<String,Object>();
+                                                    map.put("money",money);
+                                                    map.put("datetime",datetime);
+                                                    map.put("sort",sort);
+                                                    map.put("introduce",introduce);
+                                                    datalist.add(map);
+                                                    simpleAdapter.notifyDataSetChanged();
+                                                    QTotal_expense();
+                                                    QTotal_income();
+                                                    QTotal_left();
+                                                    income.setText(":"+String.valueOf(sum_income)+" 元");
+                                                    expense.setText(":"+String.valueOf(sum_expense)+" 元");
+
+                                                }
+
+
+                                            } });
+                                            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                                @Override public void onClick(DialogInterface dialog, int which)
+                                                { dialog.cancel(); } });
+                                            builder.create().show();
+                                            break;
+                                        case 1:
+                                            builder.setTitle("将日期修改为：");
+                                            builder.setIcon(R.mipmap.ic_launcher);
+                                            builder.setView(editText);
+                                            builder.setPositiveButton("确定", new DialogInterface.OnClickListener()
+                                            { @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                //找出当前位置的日期
+                                                String delete_money=datalist.get(location).get("money").toString();
+                                                String delete_sort=datalist.get(location).get("sort").toString();
+                                                String delete_time=datalist.get(location).get("datetime").toString();
+                                                datalist.clear();
+                                                ContentValues values=new ContentValues();
+                                                values.put("datetime",editText.getText().toString());
+                                                db.update("table_payout",values,"money=? and datetime=? and sort=?",new String[]{delete_money,delete_sort,delete_time});
+                                                while (cursor.moveToNext()) {
+                                                    int money = cursor.getInt(0);
+                                                    String datetime = cursor.getString(1);
+                                                    String sort = cursor.getString(2);
+                                                    String introduce= cursor.getString(3);
+                                                    final Map<String,Object> map;
+                                                    map=new HashMap<String,Object>();
+                                                    map.put("money",money);
+                                                    map.put("datetime",datetime);
+                                                    map.put("sort",sort);
+                                                    map.put("introduce",introduce);
+                                                    datalist.add(map);
+                                                    simpleAdapter.notifyDataSetChanged();
+                                                }
+
+                                            } });
+                                            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                                @Override public void onClick(DialogInterface dialog, int which)
+                                                { dialog.cancel(); } });
+                                            builder.create().show();
+                                            break;
+                                        case 2:
+                                            final String[] items = {"交通","吃饭","医疗","娱乐","教育","生活用品","其他"};
+                                            builder.setTitle("将支出类别修改为：");
+                                            builder.setItems(items, new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                    dialogInterface.dismiss();
+                                                    ContentValues values=new ContentValues();
+                                                    String delete_time;
+                                                    String delete_money;
+                                                    String delete_sort;
+                                                    switch (i)
+                                                    {
+                                                        case 0:
+                                                            delete_money=datalist.get(location).get("money").toString();
+                                                            delete_sort=datalist.get(location).get("sort").toString();
+                                                            delete_time=datalist.get(location).get("datetime").toString();
+                                                            datalist.clear();
+                                                            values.put("sort",items[0]);
+                                                            db.update("table_payout",values,"money=? and datetime=? and sort=?",new String[]{delete_money,delete_sort,delete_time});
+                                                            while (cursor.moveToNext()) {
+                                                                int money = cursor.getInt(0);
+                                                                String datetime = cursor.getString(1);
+                                                                String sort = cursor.getString(2);
+                                                                String introduce= cursor.getString(3);
+                                                                final Map<String,Object> map;
+                                                                map=new HashMap<String,Object>();
+                                                                map.put("money",money);
+                                                                map.put("datetime",datetime);
+                                                                map.put("sort",sort);
+                                                                map.put("introduce",introduce);
+                                                                datalist.add(map);
+                                                                simpleAdapter.notifyDataSetChanged();
+                                                            }
+                                                            break;
+                                                        case 1:
+                                                            delete_money=datalist.get(location).get("money").toString();
+                                                            delete_sort=datalist.get(location).get("sort").toString();
+                                                            delete_time=datalist.get(location).get("datetime").toString();
+                                                            datalist.clear();
+                                                            //ContentValues values=new ContentValues();
+                                                            values.put("sort",items[1]);
+                                                            db.update("table_payout",values,"money=? and datetime=? and sort=?",new String[]{delete_money,delete_sort,delete_time});
+                                                            datalist.clear();
+                                                            //ContentValues values=new ContentValues();
+                                                            values.put("sort",items[1]);
+                                                            db.update("table_payout",values,"sort=?",new String[]{delete_time});
+                                                            while (cursor.moveToNext()) {
+                                                                int money = cursor.getInt(0);
+                                                                String datetime = cursor.getString(1);
+                                                                String sort = cursor.getString(2);
+                                                                String introduce= cursor.getString(3);
+                                                                final Map<String,Object> map;
+                                                                map=new HashMap<String,Object>();
+                                                                map.put("money",money);
+                                                                map.put("datetime",datetime);
+                                                                map.put("sort",sort);
+                                                                map.put("introduce",introduce);
+                                                                datalist.add(map);
+                                                                simpleAdapter.notifyDataSetChanged();
+                                                            }
+                                                            break;
+                                                        case 2:
+                                                            delete_money=datalist.get(location).get("money").toString();
+                                                            delete_sort=datalist.get(location).get("sort").toString();
+                                                            delete_time=datalist.get(location).get("datetime").toString();
+                                                            datalist.clear();
+                                                            //ContentValues values=new ContentValues();
+                                                            values.put("sort",items[2]);
+                                                            db.update("table_payout",values,"money=? and datetime=? and sort=?",new String[]{delete_money,delete_sort,delete_time});
+                                                            while (cursor.moveToNext()) {
+                                                                int money = cursor.getInt(0);
+                                                                String datetime = cursor.getString(1);
+                                                                String sort = cursor.getString(2);
+                                                                String introduce= cursor.getString(3);
+                                                                final Map<String,Object> map;
+                                                                map=new HashMap<String,Object>();
+                                                                map.put("money",money);
+                                                                map.put("datetime",datetime);
+                                                                map.put("sort",sort);
+                                                                map.put("introduce",introduce);
+                                                                datalist.add(map);
+                                                                simpleAdapter.notifyDataSetChanged();
+                                                            }
+                                                            break;
+                                                        case 3:
+                                                            delete_money=datalist.get(location).get("money").toString();
+                                                            delete_sort=datalist.get(location).get("sort").toString();
+                                                            delete_time=datalist.get(location).get("datetime").toString();
+                                                            datalist.clear();
+                                                            //ContentValues values=new ContentValues();
+                                                            values.put("sort",items[3]);
+                                                            db.update("table_payout",values,"money=? and datetime=? and sort=?",new String[]{delete_money,delete_sort,delete_time});
+                                                            while (cursor.moveToNext()) {
+                                                                int money = cursor.getInt(0);
+                                                                String datetime = cursor.getString(1);
+                                                                String sort = cursor.getString(2);
+                                                                String introduce= cursor.getString(3);
+                                                                final Map<String,Object> map;
+                                                                map=new HashMap<String,Object>();
+                                                                map.put("money",money);
+                                                                map.put("datetime",datetime);
+                                                                map.put("sort",sort);
+                                                                map.put("introduce",introduce);
+                                                                datalist.add(map);
+                                                                simpleAdapter.notifyDataSetChanged();
+                                                            }
+                                                            break;
+                                                        case 4:
+                                                            delete_money=datalist.get(location).get("money").toString();
+                                                            delete_sort=datalist.get(location).get("sort").toString();
+                                                            delete_time=datalist.get(location).get("datetime").toString();
+                                                            datalist.clear();
+                                                            //ContentValues values=new ContentValues();
+                                                            values.put("sort",items[4]);
+                                                            db.update("table_payout",values,"money=? and datetime=? and sort=?",new String[]{delete_money,delete_sort,delete_time});
+                                                            while (cursor.moveToNext()) {
+                                                                int money = cursor.getInt(0);
+                                                                String datetime = cursor.getString(1);
+                                                                String sort = cursor.getString(2);
+                                                                String introduce= cursor.getString(3);
+                                                                final Map<String,Object> map;
+                                                                map=new HashMap<String,Object>();
+                                                                map.put("money",money);
+                                                                map.put("datetime",datetime);
+                                                                map.put("sort",sort);
+                                                                map.put("introduce",introduce);
+                                                                datalist.add(map);
+                                                                simpleAdapter.notifyDataSetChanged();
+                                                            }
+                                                            break;
+                                                        case 5:
+                                                            delete_money=datalist.get(location).get("money").toString();
+                                                            delete_sort=datalist.get(location).get("sort").toString();
+                                                            delete_time=datalist.get(location).get("datetime").toString();
+                                                            datalist.clear();
+                                                            //ContentValues values=new ContentValues();
+                                                            values.put("sort",items[5]);
+                                                            db.update("table_payout",values,"money=? and datetime=? and sort=?",new String[]{delete_money,delete_sort,delete_time});
+                                                        while (cursor.moveToNext()) {
+                                                            int money = cursor.getInt(0);
+                                                            String datetime = cursor.getString(1);
+                                                            String sort = cursor.getString(2);
+                                                            String introduce= cursor.getString(3);
+                                                            final Map<String,Object> map;
+                                                            map=new HashMap<String,Object>();
+                                                            map.put("money",money);
+                                                            map.put("datetime",datetime);
+                                                            map.put("sort",sort);
+                                                            map.put("introduce",introduce);
+                                                            datalist.add(map);
+                                                            simpleAdapter.notifyDataSetChanged();
+                                                        }
+                                                        break;
+                                                        case 6:
+                                                            delete_money=datalist.get(location).get("money").toString();
+                                                            delete_sort=datalist.get(location).get("sort").toString();
+                                                            delete_time=datalist.get(location).get("datetime").toString();
+                                                            datalist.clear();
+                                                            //ContentValues values=new ContentValues();
+                                                            values.put("sort",items[6]);
+                                                            db.update("table_payout",values,"money=? and datetime=? and sort=?",new String[]{delete_money,delete_sort,delete_time});
+                                                            while (cursor.moveToNext()) {
+                                                                int money = cursor.getInt(0);
+                                                                String datetime = cursor.getString(1);
+                                                                String sort = cursor.getString(2);
+                                                                String introduce= cursor.getString(3);
+                                                                final Map<String,Object> map;
+                                                                map=new HashMap<String,Object>();
+                                                                map.put("money",money);
+                                                                map.put("datetime",datetime);
+                                                                map.put("sort",sort);
+                                                                map.put("introduce",introduce);
+                                                                datalist.add(map);
+                                                                simpleAdapter.notifyDataSetChanged();
+                                                            }
+                                                            break;
+                                                    }
+
+                                                }
+                                            });
+                                            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                                @Override public void onClick(DialogInterface dialog, int which)
+                                                { dialog.cancel(); } });
+                                            builder.create().show();
+                                            break;
+                                        case 3:
+                                            builder.setTitle("将备注修改为：");
+                                            builder.setIcon(R.mipmap.ic_launcher);
+                                            builder.setView(editText);
+                                            builder.setPositiveButton("确定", new DialogInterface.OnClickListener()
+                                            { @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                //找出当前位置的备注
+                                                String delete_introduce=datalist.get(location).get("introduce").toString();
+                                                String delete_money=datalist.get(location).get("money").toString();
+                                                String delete_sort=datalist.get(location).get("sort").toString();
+                                                String delete_time=datalist.get(location).get("datetime").toString();
+                                                datalist.clear();
+                                                ContentValues values=new ContentValues();
+                                                values.put("introduce",editText.getText().toString());
+                                                db.update("table_payout",values,"money=? and datetime=? and sort=?",new String[]{delete_money,delete_sort,delete_time});;
+                                                while (cursor.moveToNext()) {
+                                                    int money = cursor.getInt(0);
+                                                    String datetime = cursor.getString(1);
+                                                    String sort = cursor.getString(2);
+                                                    String introduce= cursor.getString(3);
+                                                    final Map<String,Object> map;
+                                                    map=new HashMap<String,Object>();
+                                                    map.put("money",money);
+                                                    map.put("datetime",datetime);
+                                                    map.put("sort",sort);
+                                                    map.put("introduce",introduce);
+                                                    datalist.add(map);
+                                                    simpleAdapter.notifyDataSetChanged();
+                                                }
+
+                                            } });
+                                            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                                @Override public void onClick(DialogInterface dialog, int which)
+                                                { dialog.cancel(); } });
+                                            builder.create().show();
+                                            break;
+                                    }
+                                }
+                            });
+
+                            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override public void onClick(DialogInterface dialog, int which)
+                                { dialog.cancel(); } });
+                            builder.create().show();
+
+                        }
+                    });
+
+
+
                     tv_money_expense_Onclick();
                     tv_date_expense_Onclick();
                     tv_sort_expense_Onclick();
                     expense_search_onclick();
                     zhichu_shouru.setText("当前为支出");
                     flag=true;
-                    expense.setText(":"+String.valueOf(sum_expense)+"元");
+                    QTotal_expense();
+                    QTotal_income();
+                    QTotal_left();
+                    expense.setText(":"+String.valueOf(sum_expense)+" 元");
                 }
 
             }
@@ -536,12 +911,6 @@ public class BillListActivity extends AppCompatActivity {
 
 
     }
-
-
-
-
-
-
 
 
     public void setclicklinster() {
@@ -596,7 +965,6 @@ public class BillListActivity extends AppCompatActivity {
         helper_out=new DatabaseHelper(BillListActivity.this,"table_payout",null,1);
         SQLiteDatabase db=helper_out.getReadableDatabase();
         Cursor cursor=db.rawQuery("select sum(money) from table_payout",null);
-       // Cursor cursor=db.rawQuery("select sum(money) from table_payout where sort=?",new String []{"交通"});
         if (cursor.moveToFirst())
         {
             do
@@ -625,7 +993,7 @@ public class BillListActivity extends AppCompatActivity {
     }
     public  void  QTotal_left(){
         sum_left=sum_income-sum_expense;
-        left.setText(String.valueOf(sum_left));
+        left.setText(String.valueOf(sum_left)+" 元");
     }
     public void tv_money_expense_Onclick()
     {
@@ -633,20 +1001,18 @@ public class BillListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(flag==true)
-                {
-                    datalist.clear();
+                {   datalist.clear();
                     helper_out=new DatabaseHelper(BillListActivity.this,"table_payout",null,1);
                     SQLiteDatabase db=helper_out.getReadableDatabase();
-                    Cursor cursor;
-                    cursor = db.query("table_payout", null, null, null, null,null, "money desc");
+                    Cursor cursor = db.query("table_payout", null, null, null, null,null, "money desc");
                     while (cursor.moveToNext()) {
+                        SimpleAdapter simpleAdapter;
                         int money = cursor.getInt(0);
                         String datetime = cursor.getString(1);
                         String sort = cursor.getString(2);
                         String introduce= cursor.getString(3);
-
                         ls=findViewById(R.id.List_1);
-                        SimpleAdapter simpleAdapter=new SimpleAdapter(BillListActivity.this,datalist,R.layout.item_list,dataKeyArr,itemIdArr);
+                        simpleAdapter =new SimpleAdapter(BillListActivity.this,datalist,R.layout.item_list,dataKeyArr,itemIdArr);
                         ls.setAdapter(simpleAdapter);
                         Map<String,Object> map;
                         map=new HashMap<String,Object>();
@@ -1051,15 +1417,14 @@ public class BillListActivity extends AppCompatActivity {
         msearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 datalist.clear();
                 String start_date=date1.getText().toString();
                 String end_date=date2.getText().toString();
-                Log.d(TAG,start_date);
                 helper=new DatabaseHelperPayin(BillListActivity.this,"table_payin",null,1);
                 SQLiteDatabase db=helper.getReadableDatabase();
-                Cursor cursor;
-             //  cursor=db.query("table_payin",null,"money between ? and ?",new String[]{"12","23"},null,null,null);
-                 cursor = db.query("table_payin", null, "datetime between ? and ?",new String[]{start_date,end_date}, null, null,null);
+                Cursor cursor = db.query("table_payin", null, "datetime between ? and ?",new String[]{start_date,end_date}, null, null,null);
                 while (cursor.moveToNext()) {
                     int money = cursor.getInt(0);
                     String datetime = cursor.getString(1);
