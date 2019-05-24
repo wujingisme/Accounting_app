@@ -57,14 +57,13 @@ public class ModfypswActivity extends AppCompatActivity {
 
     }
     public  void modifyPsw(String newPsw)
-    {
-        String md5Psw=MD5Utils.MD5((newPsw));
-        SharedPreferences sp = getSharedPreferences("LoginInfo", MODE_PRIVATE);
-        //logininfo表示文件名
-        String spPsw=sp.getString("loginUserName","");
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString(spPsw, md5Psw);//
-        editor.commit();//提交修改
+    { String md5Psw=MD5Utils.MD5((newPsw));
+    SharedPreferences sp = getSharedPreferences("LoginInfo", MODE_PRIVATE);
+    //logininfo表示文件名
+    String spPsw=sp.getString("loginUserName","");
+    SharedPreferences.Editor editor = sp.edit();
+    editor.putString(spPsw, md5Psw);//
+    editor.commit();//提交修改
     }
 
     public void initView()

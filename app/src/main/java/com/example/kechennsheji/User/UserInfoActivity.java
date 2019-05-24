@@ -71,17 +71,14 @@ public class UserInfoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 getString();
                 if (TextUtils.isEmpty(nickname))
-                {
-                    Toast.makeText(UserInfoActivity.this, "请输入昵称", Toast.LENGTH_SHORT).show();
-                }
+                { Toast.makeText(UserInfoActivity.this,
+                        "请输入昵称", Toast.LENGTH_SHORT).show(); }
                 else if(TextUtils.isEmpty(gender))
-                {
-                    Toast.makeText(UserInfoActivity.this, "请输入性别", Toast.LENGTH_SHORT).show();
-                }
+                { Toast.makeText(UserInfoActivity.this,
+                        "请输入性别", Toast.LENGTH_SHORT).show(); }
                 else if(TextUtils.isEmpty(age))
-                {
-                    Toast.makeText(UserInfoActivity.this, "请输入年龄", Toast.LENGTH_SHORT).show();
-                }
+                { Toast.makeText(UserInfoActivity.this,
+                        "请输入年龄", Toast.LENGTH_SHORT).show(); }
                 else{
                     et_nickname.setText(nickname);
                     et_age.setText(age);

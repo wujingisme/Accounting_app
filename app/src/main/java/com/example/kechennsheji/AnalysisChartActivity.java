@@ -168,41 +168,38 @@ public class AnalysisChartActivity extends AppCompatActivity {
         helper_out=new DatabaseHelper(AnalysisChartActivity.this,"table_payout",null,1);
         SQLiteDatabase db=helper_out.getReadableDatabase();
         // Cursor cursor_jiaotong=db.rawQuery("select sum(money) from table_payout where sort=?",new String []{"交通"});
-        Cursor cursor_jiaotong=db.rawQuery("select sum(money) from table_payout where sort=?",new String []{"交通"});
-        Cursor cursor_zhufang=db.rawQuery("select sum(money) from table_payout where sort=?",new String []{"吃饭"});
-        Cursor cursor_yiliao=db.rawQuery("select sum(money) from table_payout where sort=?",new String []{"医疗"});
-        Cursor cursor_yule=db.rawQuery("select sum(money) from table_payout where sort=?",new String []{"娱乐"});
-        Cursor cursor_jiaoyu=db.rawQuery("select sum(money) from table_payout where sort=?",new String []{"教育"});
-        Cursor cursor_shenghuoyongp=db.rawQuery("select sum(money) from table_payout where sort=?",new String []{"生活用品"});
-        Cursor cursor_qita=db.rawQuery("select sum(money) from table_payout where sort=?",new String []{"其他"});
+        Cursor cursor_jiaotong= db.rawQuery("select sum(money) from " +
+                "table_payout where sort=?",new String []{"交通"});
+        Cursor cursor_zhufang=db.rawQuery("select sum(money) from " +
+                "table_payout where sort=?",new String []{"吃饭"});
+        Cursor cursor_yiliao=db.rawQuery("select sum(money) from " +
+                "table_payout where sort=?",new String []{"医疗"});
+        Cursor cursor_yule=db.rawQuery("select sum(money) from" +
+                " table_payout where sort=?",new String []{"娱乐"});
+        Cursor cursor_jiaoyu=db.rawQuery("select sum(money) from" +
+                " table_payout where sort=?",new String []{"教育"});
+        Cursor cursor_shenghuoyongp=db.rawQuery("select sum(money) from " +
+                "table_payout where sort=?",new String []{"生活用品"});
+        Cursor cursor_qita=db.rawQuery("select sum(money) from" +
+                " table_payout where sort=?",new String []{"其他"});
 
         if (cursor_jiaotong.moveToFirst())
-        { do
-        { m_jiaotong=cursor_jiaotong.getInt(0); }
+        { do { m_jiaotong=cursor_jiaotong.getInt(0); }
         while (cursor_jiaotong.moveToNext());
-
         } m_jiaotong2=m_jiaotong;
         cursor_jiaotong.close();
-
         if (cursor_zhufang.moveToFirst())
-        { do
-        {
-            m_zhufang=cursor_zhufang.getInt(0); }
+        { do { m_zhufang=cursor_zhufang.getInt(0); }
         while (cursor_zhufang.moveToNext());
         }m_zhufang2=m_zhufang;
         cursor_zhufang.close();
         if(cursor_yiliao.moveToFirst())
-        {
-            do{
-                m_yiliao=cursor_yiliao.getInt(0);
-            }while (cursor_yiliao.moveToNext());
+        { do{ m_yiliao=cursor_yiliao.getInt(0);
+        }while (cursor_yiliao.moveToNext());
         }m_yiliao2=m_yiliao;
         cursor_yiliao.close();
         if(cursor_yule.moveToFirst())
-        {
-            do {
-                m_yule=cursor_yule.getInt(0);
-
+        { do { m_yule=cursor_yule.getInt(0);
             }while (cursor_yule.moveToNext()) ;
         }m_yule2=m_yule;
         cursor_yule.close();
@@ -260,18 +257,12 @@ public class AnalysisChartActivity extends AppCompatActivity {
         tv_shenghuoyongp.setText((String.valueOf(m_shenghuoyongping2))+" 元");
         tv_qita.setText(String .valueOf(m_qita2)+" 元");
     }
-    private void setData(int count) {
-        // 准备x"轴"数据：在i的位置，显示x[i]字符串
-        ArrayList<String> xVals = new ArrayList<String>();
-        // 真实的饼状图百分比分区。
-        // Entry包含两个重要数据内容：position和该position的数值。
+    private void setData(int count) {// 准备x"轴"数据：在i的位置，显示x[i]字符串
+        ArrayList<String> xVals = new ArrayList<String>(); // 真实的饼状图百分比分区。// Entry包含两个重要数据内容：position和该position的数值。
         ArrayList<Entry> yVals = new ArrayList<Entry>();
-
         for (int xi = 0; xi < count; xi++) {
-            xVals.add(xi, x[xi]);
-            // y[i]代表在x轴的i位置真实的百分比占
-            yVals.add(new Entry(y[xi], xi));
-        }
+            xVals.add(xi, x[xi]);// y[i]代表在x轴的i位置真实的百分比占
+            yVals.add(new Entry(y[xi], xi)); }
         PieDataSet yDataSet = new PieDataSet(yVals, "百分比占");
         // 每个百分比占区块绘制的不同颜色
         ArrayList<Integer> colors = new ArrayList<Integer>();

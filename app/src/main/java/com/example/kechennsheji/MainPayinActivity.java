@@ -172,9 +172,9 @@ public class MainPayinActivity extends AppCompatActivity{
                 case R.id.btn_yonghuzhongxin:
                     intent=new Intent(MainPayinActivity.this,UserActivity.class);
                     break;
-                /*case R.id.manager_sort:
-                    intent=new Intent(MainPayinActivity.this,MgPayinsortActivity.class);
-                    break;*/
+                case R.id.RB_payin:
+                    intent=new Intent(MainPayinActivity.this,MainPayoutActivity.class);
+                    break;
                 case R.id.RB_payout:
                     intent=new Intent(MainPayinActivity.this,MainPayoutActivity.class);
                     break;

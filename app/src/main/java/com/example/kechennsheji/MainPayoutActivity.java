@@ -87,9 +87,6 @@ private final static String TAG="insert";
                 showDatePickDlg();
             }
         });
-       //调出分类
-      /*  m_sort=getIntent().getStringExtra("name");
-        mEt_Sort.setText(m_sort);*/
         mBtnManagerSort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,12 +163,13 @@ private final static String TAG="insert";
                 case R.id.btn_yonghuzhongxin:
                     intent=new Intent(MainPayoutActivity.this,UserActivity.class);
                     break;
-                /*case R.id.manager_sort:
-                    intent=new Intent(MainPayoutActivity.this,MgPayoutsortActivity.class);
-                    break;*/
                 case R.id.RB_payin:
                     intent=new Intent(MainPayoutActivity.this,MainPayinActivity.class);
                     break;
+                case R.id.RB_payout:
+                    intent=new Intent(MainPayoutActivity.this,MainPayoutActivity.class);
+                    break;
+
             }
             startActivity(intent);
 

@@ -56,8 +56,10 @@ public class BillListActivity extends AppCompatActivity {
     int sum_income,sum_expense,sum_left=0;
     private static  final String TAG="test";
     private List<Map<String,Object>>datalist=new ArrayList<Map<String,Object>>();
-    private int[] itemIdArr=new int[]{R.id.tv_shouzhi,id.tv_sort,id.tv_jiner,id.tv_riqi};
-    private String[]   dataKeyArr=new String[]{"money","datetime","sort","introduce"};
+    private int[] itemIdArr=new int[]
+            {R.id.tv_shouzhi,id.tv_sort,id.tv_jiner,id.tv_riqi};
+    private String[] dataKeyArr=new
+            String[]{"money","datetime","sort","introduce"};
     SQLiteDatabase db;
     SimpleAdapter simpleAdapter;
     /*SimpleAdapter的参数说明
@@ -82,12 +84,9 @@ public class BillListActivity extends AppCompatActivity {
         db.delete("table_payin","sort=?",new String[]{""});
         db.delete("table_payin","money=?",new String[]{""});
         ls=findViewById(R.id.List_1);
-
-        simpleAdapter=new SimpleAdapter(BillListActivity.this,datalist,R.layout.item_list,dataKeyArr,itemIdArr);
+        simpleAdapter=new SimpleAdapter(BillListActivity.this,datalist,
+                R.layout.item_list,dataKeyArr,itemIdArr);
         ls.setAdapter(simpleAdapter);
-
-
-
         zhichu_shouru.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,16 +97,15 @@ public class BillListActivity extends AppCompatActivity {
                     helper=new DatabaseHelperPayin(BillListActivity.this,"table_payin",null,1);
                     SQLiteDatabase db=helper.getReadableDatabase();
                     db.delete("table_payin","money=?",new String[]{""});
-                    ls=findViewById(R.id.List_1);
-                    final Cursor cursor;
+                    ls=findViewById(R.id.List_1);final Cursor cursor;
                     cursor = db.query("table_payin", null, null, null, null,null, null);
                     while (cursor.moveToNext()) {
                         int money = cursor.getInt(0);
                         String datetime = cursor.getString(1);
                         String sort = cursor.getString(2);
                         String introduce= cursor.getString(3);
-
-                     simpleAdapter=new SimpleAdapter(BillListActivity.this,datalist,R.layout.item_list,dataKeyArr,itemIdArr);
+                    simpleAdapter=new SimpleAdapter(BillListActivity.this,datalist,
+                       R.layout.item_list,dataKeyArr,itemIdArr);
                        ls.setAdapter(simpleAdapter);
                         final Map<String,Object> map;
                         map=new HashMap<String,Object>();
@@ -124,7 +122,8 @@ public class BillListActivity extends AppCompatActivity {
                       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                               final int location=position;
                               final String[] items = {"金额","日期(格式为YY-MM-DD)","分类","备注"};
-                              final AlertDialog.Builder builder = new AlertDialog.Builder(BillListActivity.this);
+                              final AlertDialog.Builder builder;
+                               builder= new AlertDialog.Builder(BillListActivity.this);
                               builder .setTitle("你想修改这条数据什么内容？");
                               builder.setItems(items, new DialogInterface.OnClickListener() {
                                   @Override
@@ -152,7 +151,8 @@ public class BillListActivity extends AppCompatActivity {
                                                   editText.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
                                                   ContentValues values=new ContentValues();
                                                   values.put("money",editText.getText().toString());
-                                                  db.update("table_payin",values, "datetime=? and sort=?",new String[]{delete_sort,delete_date});
+                                                  db.update("table_payin",values, "datetime=? and sort=?",
+                                                          new String[]{delete_sort,delete_date});
                                                   while (cursor.moveToNext()) {
                                                       int money = cursor.getInt(0);
                                                       String datetime = cursor.getString(1);
@@ -1424,7 +1424,8 @@ public class BillListActivity extends AppCompatActivity {
                 String end_date=date2.getText().toString();
                 helper=new DatabaseHelperPayin(BillListActivity.this,"table_payin",null,1);
                 SQLiteDatabase db=helper.getReadableDatabase();
-                Cursor cursor = db.query("table_payin", null, "datetime between ? and ?",new String[]{start_date,end_date}, null, null,null);
+                Cursor cursor = db.query("table_payin", null, "datetime between ? and ?",
+                        new String[]{start_date,end_date}, null, null,null);
                 while (cursor.moveToNext()) {
                     int money = cursor.getInt(0);
                     String datetime = cursor.getString(1);
